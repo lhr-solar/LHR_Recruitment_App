@@ -1,0 +1,31 @@
+[
+ {
+  "scope": "app",
+  "shape": "app screen",
+  "theme": "brand",
+  "axes": "light/geometric-sans/chromatic-blue",
+  "hero": "two-door sign-in beside a team photograph",
+  "nav": "top bar with RECRUITMENT lockup",
+  "footer": "none",
+  "imagery": "team photographs from longhornracing.org galleries",
+  "photos": [
+   "solar-sunset-run",
+   "electric-car-track",
+   "combustion-livery"
+  ],
+  "entry": "/login",
+  "fingerprint": "lhr-brand-signin-v1",
+  "sections": [
+   "sign-in",
+   "join",
+   "pending",
+   "partner request",
+   "admin join requests"
+  ],
+  "signature": "the two-door sign-in beside a team photograph",
+  "waived": [],
+  "prompt": "Longhorn Racing Recruitment phase 1",
+  "date": "2026-11-10",
+  "mode": "build"
+ }
+]

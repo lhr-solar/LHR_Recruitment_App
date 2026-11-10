@@ -1,0 +1,541 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-09T00:00:00Z",
+  "title": "Design System: Longhorn Racing Recruitment",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Ocean Blue",
+        "canonical": "oklch(45.8% 0.096 235)",
+        "tonalRamp": [
+          "#000B2D",
+          "#00294C",
+          "#00486D",
+          "#176990",
+          "#408BB3",
+          "#65AFD9",
+          "#89D4FF",
+          "#AEFAFF"
+        ]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Deep Ocean",
+        "canonical": "oklch(39.3% 0.082 235)",
+        "tonalRamp": [
+          "#000C28",
+          "#002946",
+          "#004867",
+          "#2A6889",
+          "#4D8AAC",
+          "#70AED1",
+          "#94D2F7",
+          "#B9F8FF"
+        ]
+      },
+      "accent-wash": {
+        "role": "primary",
+        "displayName": "Ocean Wash",
+        "canonical": "oklch(94.2% 0.014 227)",
+        "tonalRamp": [
+          "#060C10",
+          "#1E272A",
+          "#3B4448",
+          "#5A6367",
+          "#7A8489",
+          "#9DA7AC",
+          "#C0CBD0",
+          "#E6F1F6"
+        ]
+      },
+      "accent-ink": {
+        "role": "neutral",
+        "displayName": "White (on accent)",
+        "canonical": "oklch(100.0% 0.000 90)",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Light Gray",
+        "canonical": "oklch(95.2% 0.006 265)",
+        "tonalRamp": [
+          "#0A0B0E",
+          "#242528",
+          "#404245",
+          "#5F6165",
+          "#808286",
+          "#A3A5A9",
+          "#C7C9CD",
+          "#ECEEF2"
+        ]
+      },
+      "paper-2": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "oklch(100.0% 0.000 90)",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "paper-3": {
+        "role": "neutral",
+        "displayName": "Mist",
+        "canonical": "oklch(97.3% 0.003 265)",
+        "tonalRamp": [
+          "#0B0B0C",
+          "#242526",
+          "#414243",
+          "#606163",
+          "#818284",
+          "#A4A5A7",
+          "#C8C9CB",
+          "#EDEEF0"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Deep Ink",
+        "canonical": "oklch(27.1% 0.042 233)",
+        "tonalRamp": [
+          "#000D1A",
+          "#0C2836",
+          "#2A4655",
+          "#496676",
+          "#698798",
+          "#8BAABC",
+          "#AFCFE1",
+          "#D4F4FF"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "oklch(38.0% 0.037 233)",
+        "tonalRamp": [
+          "#000D18",
+          "#112834",
+          "#2E4653",
+          "#4C6573",
+          "#6D8795",
+          "#8FAAB9",
+          "#B2CEDE",
+          "#D7F4FF"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Slate",
+        "canonical": "oklch(48.4% 0.034 238)",
+        "tonalRamp": [
+          "#000D18",
+          "#142734",
+          "#314552",
+          "#4F6472",
+          "#708695",
+          "#92A9B8",
+          "#B5CDDD",
+          "#DAF3FF"
+        ]
+      },
+      "control": {
+        "role": "neutral",
+        "displayName": "Control Gray",
+        "canonical": "oklch(63.2% 0.028 236)",
+        "tonalRamp": [
+          "#010D15",
+          "#172731",
+          "#33454F",
+          "#52646F",
+          "#738591",
+          "#95A8B5",
+          "#B8CDD9",
+          "#DDF2FF"
+        ]
+      },
+      "brand-gray": {
+        "role": "neutral",
+        "displayName": "Mid Gray (decorative only)",
+        "canonical": "oklch(73.8% 0.024 233)",
+        "tonalRamp": [
+          "#020D14",
+          "#19272F",
+          "#36444D",
+          "#54646D",
+          "#75858F",
+          "#97A8B2",
+          "#BBCCD7",
+          "#E0F2FC"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "oklch(89.1% 0.011 244)",
+        "tonalRamp": [
+          "#070C10",
+          "#21262A",
+          "#3D4348",
+          "#5C6267",
+          "#7D8389",
+          "#9FA6AC",
+          "#C3CAD0",
+          "#E8EFF6"
+        ]
+      },
+      "solar": {
+        "role": "tertiary",
+        "displayName": "Solar Amber",
+        "canonical": "oklch(76.4% 0.175 62)",
+        "tonalRamp": [
+          "#290000",
+          "#580000",
+          "#7D1700",
+          "#A33F00",
+          "#C96200",
+          "#F08600",
+          "#FFAB36",
+          "#FFDC99"
+        ]
+      },
+      "electric": {
+        "role": "tertiary",
+        "displayName": "Electric Gold",
+        "canonical": "oklch(82.2% 0.163 77)",
+        "tonalRamp": [
+          "#230000",
+          "#4C0700",
+          "#6F2D00",
+          "#924F00",
+          "#B77100",
+          "#DD9500",
+          "#FFB92D",
+          "#FFE48F"
+        ]
+      },
+      "combustion": {
+        "role": "tertiary",
+        "displayName": "Combustion Sand",
+        "canonical": "oklch(86.4% 0.122 77)",
+        "tonalRamp": [
+          "#230000",
+          "#431600",
+          "#643500",
+          "#875600",
+          "#AA7712",
+          "#CF9A41",
+          "#F5BF68",
+          "#FFE48F"
+        ]
+      },
+      "error": {
+        "role": "status",
+        "displayName": "Error Red",
+        "canonical": "oklch(50.0% 0.182 30)",
+        "tonalRamp": [
+          "#2D0000",
+          "#620000",
+          "#8A0000",
+          "#B12015",
+          "#DA4A3B",
+          "#FF705E",
+          "#FF9681",
+          "#FFD0BF"
+        ]
+      },
+      "error-wash": {
+        "role": "status",
+        "displayName": "Error Wash",
+        "canonical": "oklch(95.6% 0.019 26)",
+        "tonalRamp": [
+          "#120807",
+          "#2E2220",
+          "#4C3E3D",
+          "#6C5D5C",
+          "#8D7E7D",
+          "#B1A19F",
+          "#D5C5C3",
+          "#FBEAE8"
+        ]
+      },
+      "success": {
+        "role": "status",
+        "displayName": "Pit Green",
+        "canonical": "oklch(51.5% 0.110 157)",
+        "tonalRamp": [
+          "#001500",
+          "#00330B",
+          "#005228",
+          "#157347",
+          "#409667",
+          "#65BA89",
+          "#8ADFAC",
+          "#AFFFD1"
+        ]
+      },
+      "success-wash": {
+        "role": "status",
+        "displayName": "Green Wash",
+        "canonical": "oklch(95.3% 0.021 159)",
+        "tonalRamp": [
+          "#040E08",
+          "#1C2821",
+          "#39463E",
+          "#57655D",
+          "#78867E",
+          "#9AA9A0",
+          "#BECEC4",
+          "#E3F3E9"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Sign-in headline only; drops to Headline size below 60rem."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Noun title opening every app and standalone page (about 28px), max 20ch."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section and table heads inside panels."
+      },
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "h3 level."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "The one sentence under the sign-in headline."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Paragraphs and input text, max 65ch."
+      },
+      "body-sm": {
+        "displayName": "Small body",
+        "purpose": "Hints, notices, table cells, captions."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, door options, team names (Montserrat 600)."
+      },
+      "field-label": {
+        "displayName": "Field label",
+        "purpose": "Form labels, table headers, nav links, primary cell text (Urbanist 600)."
+      }
+    },
+    "shadows": [
+      {
+        "name": "overlay",
+        "value": "0 8px 24px color-mix(in oklab, #0E2A38 14%, transparent)",
+        "purpose": "Mobile menu sheet only; resting surfaces are flat."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "All state transitions."
+      },
+      {
+        "name": "dur-micro",
+        "value": "120ms",
+        "purpose": "Hover, border and colour changes; press nudge."
+      },
+      {
+        "name": "spinner",
+        "value": "700ms linear infinite",
+        "purpose": "Pending submit button ring."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: durations collapse to 0.01ms",
+        "purpose": "Global accessibility override."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "narrow",
+        "value": "40rem",
+        "purpose": "Form rows and team tiles stack."
+      },
+      {
+        "name": "shell",
+        "value": "48rem",
+        "purpose": "Top-bar nav collapses to Menu; tables become stacked rows."
+      },
+      {
+        "name": "signin",
+        "value": "60rem",
+        "purpose": "Sign-in photo becomes a 32vh band above the panel."
+      }
+    ],
+    "radiusNotes": {
+      "door-switch-track": "12px (control radius plus 4px padding)",
+      "team-stripe": "2px 2px 0 0, 3px tall"
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one filled Ocean Blue action per view.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Continue with Google</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border:1px solid transparent;border-radius:8px;font-family:var(--font-display, Montserrat, sans-serif);font-size:0.875rem;font-weight:600;line-height:1;cursor:pointer;transition:background-color 120ms cubic-bezier(0.16,1,0.3,1),border-color 120ms cubic-bezier(0.16,1,0.3,1),transform 120ms cubic-bezier(0.16,1,0.3,1)}.ds-btn:focus-visible{outline:2px solid #045F85;outline-offset:2px}.ds-btn:active{transform:translateY(1px)}.ds-btn-primary{background:#045F85;color:#FFFFFF}.ds-btn-primary:hover{background:#034C6B}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "White outlined button for secondary actions and the mobile Menu.",
+      "html": "<button class=\"ds-btn2\">Menu</button>",
+      "css": ".ds-btn2{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border:1px solid #7A8D99;border-radius:8px;background:#FFFFFF;color:#0E2A38;font-family:var(--font-display, Montserrat, sans-serif);font-size:0.875rem;font-weight:600;line-height:1;cursor:pointer;transition:background-color 120ms,border-color 120ms}.ds-btn2:hover{border-color:#2E4653;background:#F5F6F8}.ds-btn2:focus-visible{outline:2px solid #045F85;outline-offset:2px}"
+    },
+    {
+      "name": "Quiet Button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Text-weight action such as Sign out.",
+      "html": "<button class=\"ds-btn-quiet\">Sign out</button>",
+      "css": ".ds-btn-quiet{display:inline-flex;align-items:center;min-height:40px;padding:0 8px;border:0;border-radius:8px;background:transparent;color:#045F85;font-family:var(--font-display, Montserrat, sans-serif);font-size:0.875rem;font-weight:600;cursor:pointer;transition:background-color 120ms}.ds-btn-quiet:hover{background:#E3EEF3}.ds-btn-quiet:focus-visible{outline:2px solid #045F85;outline-offset:2px}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Label, hint and 40px input on white.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-label\" for=\"ds-email\">Work email</label><p class=\"ds-hint\">We'll send a sign-in link.</p><input id=\"ds-email\" class=\"ds-input\" placeholder=\"name@company.com\"></div>",
+      "css": ".ds-field{display:grid;gap:8px;max-width:26rem}.ds-label{font-family:var(--font-body, Urbanist, sans-serif);font-size:0.875rem;font-weight:600;color:#0E2A38}.ds-hint{margin:0;font-size:0.875rem;color:#4D6270}.ds-input{min-height:40px;padding:0 12px;border:1px solid #7A8D99;border-radius:8px;background:#FFFFFF;color:#0E2A38;font:inherit;font-size:1rem;transition:border-color 120ms}.ds-input::placeholder{color:#4D6270}.ds-input:hover{border-color:#2E4653}.ds-input:focus-visible{outline:2px solid #045F85;outline-offset:0;border-color:#045F85}"
+    },
+    {
+      "name": "Top Bar Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "White sticky bar: logo, Recruitment label, nav links with Ocean Wash current state.",
+      "html": "<nav class=\"ds-bar\"><span class=\"ds-product\">Recruitment</span><a class=\"ds-nav\" href=\"#\" aria-current=\"page\">My profile</a><a class=\"ds-nav\" href=\"#\">Jobs</a><a class=\"ds-nav\" href=\"#\">Admin</a></nav>",
+      "css": ".ds-bar{display:flex;align-items:center;gap:4px;min-height:60px;padding:0 24px;background:#FFFFFF;border-bottom:1px solid #D5DCE2}.ds-product{margin-right:36px;padding-left:12px;border-left:1px solid #9CADB7;color:#045F85;font-family:var(--font-display, Montserrat, sans-serif);font-size:0.875rem;font-weight:500}.ds-nav{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border-radius:8px;color:#2E4653;font-size:0.875rem;font-weight:600;text-decoration:none;transition:background-color 120ms,color 120ms}.ds-nav:hover{background:#F5F6F8;color:#0E2A38}.ds-nav:focus-visible{outline:2px solid #045F85;outline-offset:0}.ds-nav[aria-current=page]{background:#E3EEF3;color:#045F85}"
+    },
+    {
+      "name": "Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Flat white container with a Rule border on Light Gray.",
+      "html": "<section class=\"ds-panel\"><h2 class=\"ds-panel-title\">Join requests</h2><p class=\"ds-panel-body\">No one is waiting. New requests from @utexas.edu accounts show up here.</p></section>",
+      "css": ".ds-panel{background:#FFFFFF;border:1px solid #D5DCE2;border-radius:16px;padding:24px;display:grid;gap:8px;max-width:32rem}.ds-panel-title{margin:0;font-family:var(--font-display, Montserrat, sans-serif);font-weight:600;font-size:1.2rem;line-height:1.25;letter-spacing:-0.01em;color:#0E2A38}.ds-panel-body{margin:0;color:#2E4653}"
+    },
+    {
+      "name": "Notice",
+      "kind": "custom",
+      "refersTo": "notice-error",
+      "description": "Inline tinted message; error, success or info.",
+      "html": "<div class=\"ds-notice ds-notice-error\">That sign-in link has expired or was already used.</div><div class=\"ds-notice ds-notice-info\">We're reviewing your request.</div>",
+      "css": ".ds-notice{padding:12px 16px;border-radius:8px;font-size:0.875rem;line-height:1.5;margin-bottom:8px}.ds-notice-error{background:#FDECEA;color:#B42318}.ds-notice-info{background:#E3EEF3;color:#034C6B}"
+    },
+    {
+      "name": "Two-Door Switch",
+      "kind": "custom",
+      "refersTo": "door-switch",
+      "description": "Signature segmented switch between the LHR member and Partner sign-in doors.",
+      "html": "<nav class=\"ds-doors\"><a class=\"ds-door\" href=\"#\" aria-current=\"page\">LHR member</a><a class=\"ds-door\" href=\"#\">Partner</a></nav>",
+      "css": ".ds-doors{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:12px;background:#EDEFF3;max-width:26rem}.ds-door{display:grid;place-items:center;min-height:40px;border-radius:8px;color:#4D6270;font-family:var(--font-display, Montserrat, sans-serif);font-size:0.875rem;font-weight:600;text-decoration:none;transition:background-color 120ms,color 120ms}.ds-door:hover{color:#0E2A38}.ds-door:focus-visible{outline:2px solid #045F85;outline-offset:0}.ds-door[aria-current=page]{background:#FFFFFF;color:#045F85;outline:1px solid #D5DCE2;outline-offset:-1px}"
+    },
+    {
+      "name": "Team Choice Tile",
+      "kind": "custom",
+      "refersTo": "team-choice",
+      "description": "Signature radio tile: team name over a team-colour stripe (official team logo sits above the name in the product).",
+      "html": "<div class=\"ds-teams\"><label class=\"ds-team\" style=\"--team:#FF9404\"><input type=\"radio\" name=\"ds-t\" checked><span>Solar</span></label><label class=\"ds-team\" style=\"--team:#FFB526\"><input type=\"radio\" name=\"ds-t\"><span>Electric</span></label><label class=\"ds-team\" style=\"--team:#FFC871\"><input type=\"radio\" name=\"ds-t\"><span>Combustion</span></label></div>",
+      "css": ".ds-teams{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:36rem}.ds-team{position:relative;display:grid;gap:12px;padding:16px;border:1px solid #7A8D99;border-radius:8px;background:#FFFFFF;cursor:pointer;font-family:var(--font-display, Montserrat, sans-serif);font-size:0.875rem;font-weight:600;color:#0E2A38;transition:border-color 120ms,background-color 120ms}.ds-team::after{content:'';position:absolute;inset:auto 16px 0;height:3px;border-radius:2px 2px 0 0;background:var(--team)}.ds-team input{position:absolute;opacity:0;pointer-events:none}.ds-team:hover{border-color:#2E4653}.ds-team:has(input:focus-visible){outline:2px solid #045F85;outline-offset:2px}.ds-team:has(input:checked){border-color:#045F85;background:#E3EEF3;box-shadow:inset 0 0 0 1px #045F85}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Team Garage Desk",
+    "overview": "A working tool that could only belong to Longhorn Racing. The system is the LHR Brand Book's \"structured approachability\" carried into product UI: white rectangles with soft rounded corners set on the brand's Light Gray, Ocean Blue as the one voice for action and selection, and Montserrat titles over Urbanist reading text. Expression does not come from ornament. It comes from three real things: the official logos, the team-colour stripes, and photographs of the cars from the team galleries.\n\nDensity is that of a quiet tool. Pages open on a noun title and a single line of context, then go straight to panels, forms and tables. Tables are built from hairline rules and alignment, never zebra bands. Every surface sits flat; depth is drawn with 1px rules and tonal steps between Light Gray, white and a near-white mist.\n\nThe one expressive surface is sign-in: a full-height team photograph (one of the three teams, rotating daily) beside a white panel holding the RECRUITMENT lockup, a \"Sign in\" headline, one sentence, a two-door switch (LHR member / Partner) and Google sign-in as the primary action.",
+    "keyCharacteristics": [
+      "Ocean Blue on Light Gray with white surfaces; ink-blue text, never pure black.",
+      "Soft rounded rectangles: 8px for controls, 16px for panels, 6px for small chips.",
+      "Flat surfaces separated by 1px rules; no card shadows.",
+      "Montserrat 600 for titles, buttons and choice labels; Urbanist for everything read.",
+      "Team ambers appear only as team coding: stripes, logos, photographs.",
+      "Official logo artwork only, full colour on light, white on dark."
+    ],
+    "rules": [
+      {
+        "name": "The One Voice Rule",
+        "body": "Ocean Blue is the only colour that means \"act here\" or \"you are here\". Nothing else is filled blue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Team Coding Rule",
+        "body": "Solar, Electric and Combustion ambers mark a team and nothing else: never a button, a warning, a highlight or a decorative accent.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mid Gray Rule",
+        "body": "Mid Gray never carries text. It fails contrast; secondary text is Slate.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Burnt Orange Rule",
+        "body": "UT Burnt Orange (#BF5700) and colours near it are trademarked and never appear. The team ambers sit well to the yellow side of it; keep it that way.",
+        "section": "colors"
+      },
+      {
+        "name": "The Title Case Voice Rule",
+        "body": "Montserrat is set at 600 in sentence case. Uppercase Montserrat is reserved for the RECRUITMENT descriptor inside the lockup artwork, which is never re-typeset in live text.",
+        "section": "typography"
+      },
+      {
+        "name": "The Eurostile Rule",
+        "body": "Eurostile Extended exists only inside the logo files. It is never loaded as a web font.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Surface Rule",
+        "body": "Resting surfaces never cast shadows. A shadow means \"this floats above the page\" and is reserved for overlays.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** use only the official LHR logo files in `public/brand/`: full colour on light grounds, the white version on dark. Follow the brand book's order: logoblock, then primary or team logo, then the three-stripe shortmark (favicon), then the wordmark.",
+      "**Do** pair any descriptor such as \"RECRUITMENT\" with the logo, set in Montserrat caps per the brand book's logo-descriptor rule.",
+      "**Do** open every app page with a noun title at Headline size (about 28px) and one line of context.",
+      "**Do** mark teams with their own amber (Solar #FF9404, Electric #FFB526, Combustion #FFC871) and their official team logo, and nowhere else.",
+      "**Do** use real team photographs from the longhornracing.org Solar, Electric and Combustion galleries for imagery.",
+      "**Do** keep every control at least 40px tall with the 2px Ocean Blue focus outline.",
+      "**Do** build tables from 1px rules and alignment."
+    ],
+    "donts": [
+      "**Don't** recolour, crop, fade, outline or re-typeset any logo, and never use a black logo.",
+      "**Don't** use UT Burnt Orange #BF5700 or any colour near it.",
+      "**Don't** write \"sponsor\" anywhere: copy, URLs, alt text or code. Companies are \"Partners\".",
+      "**Don't** use \"IC\" or \"EV\" in public copy, or \"UT Austin's LHR\". Teams are Solar, Electric and Combustion (LHRs, LHRe, LHRc); the name is \"Longhorn Racing\" or \"LHR\".",
+      "**Don't** set text in Mid Gray #9CADB7; it fails contrast.",
+      "**Don't** put shadows on resting panels, tiles or bars.",
+      "**Don't** use team ambers for buttons, warnings, badges or decoration.",
+      "**Don't** add a sidebar to the app shell.",
+      "**Don't** load Eurostile Extended as a web font.",
+      "**Don't** put eyebrow or kicker labels above titles."
+    ]
+  }
+}
