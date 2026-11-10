@@ -28,7 +28,7 @@ export function AppShell({ viewer, children }: { viewer: Viewer; children: React
         <div className="shell-bar-inner">
           <Link href="/" className="shell-brand">
             <Logo height={22} />
-            <span className="shell-product">Recruitment</span>
+            <span className="shell-product">Careers</span>
           </Link>
 
           {nav.length > 0 && (
@@ -45,7 +45,7 @@ export function AppShell({ viewer, children }: { viewer: Viewer; children: React
             <span className="shell-name" title={viewer.email}>
               {name}
             </span>
-            <form action="/auth/signout" method="post">
+            <form action="/auth/signout" method="post" data-leaves-page>
               <button type="submit" className="btn btn-quiet">
                 Sign out
               </button>
@@ -61,7 +61,7 @@ export function AppShell({ viewer, children }: { viewer: Viewer; children: React
                 </NavLink>
               ))}
               <p className="shell-menu-name">{name}</p>
-              <form action="/auth/signout" method="post">
+              <form action="/auth/signout" method="post" data-leaves-page>
                 <button type="submit" className="btn btn-secondary btn-block">
                   Sign out
                 </button>

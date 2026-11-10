@@ -1,4 +1,4 @@
-# Longhorn Racing Recruitment
+# LHR Careers
 
 Longhorn Racing's Partners find engineers from the Solar, Electric and Combustion teams, and post jobs for them.
 Plan: [`docs/PLAN.md`](docs/PLAN.md) · Product context: [`PRODUCT.md`](PRODUCT.md) · Design system: [`DESIGN.md`](DESIGN.md)
@@ -30,7 +30,7 @@ Or run the app on your machine instead of in a container: `npm run dev:local` (u
 | http://127.0.0.1:54324 | **Mailpit**: every sign-in email lands here; nothing is really sent |
 | http://127.0.0.1:54323 | **Supabase Studio**: tables, auth users, storage |
 
-**Signing in locally.** Google is off locally (no credentials needed), so both doors use emailed links, which arrive in Mailpit. Test accounts from `supabase/seed.sql`:
+**Signing in locally.** Google is off locally (no credentials needed), so the sign-in page hides the Google button and both doors use emailed links, which arrive in Mailpit. The page shows the Google button only when the Supabase project has Google turned on. Test accounts from `supabase/seed.sql`:
 
 | Door | Email | What happens |
 |---|---|---|
@@ -46,6 +46,7 @@ Or run the app on your machine instead of in a container: `npm run dev:local` (u
 |---|---|
 | `npm run db:reset` | Wipes the local database and reapplies migrations + seed |
 | `npm run docker:preview` | Builds the Cloudflare Worker and runs it in workerd, like production: http://localhost:8787 |
+| `npm run docker:refresh` | Clears the dev server's cache and restarts it. Use it when a CSS change doesn't show up: Turbopack sometimes misses edits to `globals.css` |
 | `npm run docker:down` | Stops the app containers |
 | `npm run db:stop` | Stops local Supabase |
 
@@ -84,8 +85,8 @@ Supabase → **Project Settings → API Keys**. Put these in `.env.local` (to ru
 
 ### 3. Google sign-in
 
-1. [Google Cloud Console](https://console.cloud.google.com/) → create a project (e.g. "LHR Recruitment").
-2. **APIs & Services → OAuth consent screen**: user type **External**, app name "Longhorn Racing Recruitment", scopes `email`, `profile`, `openid`. Publish the app when you launch.
+1. [Google Cloud Console](https://console.cloud.google.com/) → create a project (e.g. "LHR Careers").
+2. **APIs & Services → OAuth consent screen**: user type **External**, app name "LHR Careers", scopes `email`, `profile`, `openid`. Publish the app when you launch.
 3. **Credentials → Create credentials → OAuth client ID** → *Web application*.
    - Authorized redirect URI: `https://<your-project-ref>.supabase.co/auth/v1/callback`
 4. Supabase → **Authentication → Sign In / Providers → Google**: enable it, paste the client ID and secret.
@@ -94,9 +95,9 @@ Supabase → **Project Settings → API Keys**. Put these in `.env.local` (to ru
 
 Supabase → **Authentication → URL Configuration**
 
-- **Site URL**: your production URL (e.g. `https://recruit.longhornracing.org`)
+- **Site URL**: your production URL (e.g. `https://careers.longhornracing.org`)
 - **Redirect URLs**: add
-  - `https://recruit.longhornracing.org/auth/**`
+  - `https://careers.longhornracing.org/auth/**`
   - `http://localhost:3000/auth/**` (only if you run the app locally against the hosted project)
 
   Sign-in emails link to these redirect URLs, so an address missing from this list breaks email sign-in.
@@ -104,7 +105,7 @@ Supabase → **Authentication → URL Configuration**
 Supabase → **Authentication → Emails**: paste this into both **Magic Link** and **Confirm signup** (a first-time Partner gets the second), so sign-in links work in any browser. It's the same file local Supabase uses, `supabase/templates/sign-in.html`:
 
 ```html
-<h2>Sign in to Longhorn Racing Recruitment</h2>
+<h2>Sign in to LHR Careers</h2>
 <p><a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email">Sign in</a></p>
 <p>This link works once and expires in an hour. If you didn't ask for it, you can ignore this email.</p>
 ```
@@ -144,6 +145,6 @@ src/app/auth/*         OAuth callback, email-link confirm, sign out
 src/app/(app)/*        signed-in screens: join, pending, profile, jobs, partner, admin
 src/app/partners/request  public Partner access request
 src/styles/tokens.css  brand tokens (LHR Brand Book)
-public/brand/          official LHR logos and the RECRUITMENT lockup
+public/brand/          official LHR logos and the CAREERS lockup
 public/photos/         team photos (see docs/assets.md)
 ```

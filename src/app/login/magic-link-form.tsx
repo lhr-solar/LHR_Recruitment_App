@@ -1,11 +1,25 @@
 "use client";
 
-import { useActionState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useActionState, useEffect } from "react";
 import { sendMagicLink, type MagicLinkState } from "./actions";
 import { SubmitButton } from "@/components/submit-button";
 
-export function MagicLinkForm({ door, label }: { door: "member" | "partner"; label: string }) {
+// The link button is secondary beside Google, and primary when it's the only way in.
+export function MagicLinkForm({ door, label, primary = false }: { door: "member" | "partner"; label: string; primary?: boolean }) {
   const [state, formAction] = useActionState<MagicLinkState, FormData>(sendMagicLink, { status: "idle" });
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // A fresh link supersedes whatever went wrong with the last one, so its error goes away.
+  useEffect(() => {
+    if (state.status !== "sent" || !searchParams.has("error")) return;
+    const params = new URLSearchParams(searchParams);
+    params.delete("error");
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  }, [state.status, searchParams, pathname, router]);
 
   if (state.status === "sent") {
     return (
@@ -44,7 +58,7 @@ export function MagicLinkForm({ door, label }: { door: "member" | "partner"; lab
           </p>
         )}
       </div>
-      <SubmitButton variant="secondary" pendingLabel="Sending link" block>
+      <SubmitButton variant={primary ? "primary" : "secondary"} pendingLabel="Sending link" block>
         Email me a sign-in link
       </SubmitButton>
     </form>

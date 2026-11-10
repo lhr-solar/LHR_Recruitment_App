@@ -1,6 +1,6 @@
-# Longhorn Racing Recruitment — Plan
+# LHR Careers — Plan
 
-A recruitment portal where Longhorn Racing **Partners** find LHR students and post jobs and internships.
+A careers site where Longhorn Racing members find internships and jobs, and the team's **Partners** find LHR students and post openings.
 
 > **Terminology:** we never say "sponsor" (UT Austin regulations). Companies are **Partners** everywhere: UI copy, emails, URLs, database tables and code.
 
@@ -31,6 +31,7 @@ The login page has two entry points, "I'm a student" and "I'm a Partner", so the
 
 - **Resume book.** Approved Partners see each visible student's full profile, resume and contact info (email and LinkedIn), and contact students directly. There's no request-and-approve step.
 - **Participation is optional.** Each student has a "Show my profile to Partners" switch.
+- **Only finished profiles are listed.** A profile appears to Partners once it has a resume, a major and a graduation date.
 - **Jobs.** Partners post jobs on the site. Each post sends students to the company's own application page.
   - Partners see how many people viewed and clicked through each post.
   - Students can mark "I applied", which puts their profile on that post's applicant list for the Partner.
@@ -42,7 +43,7 @@ The login page has two entry points, "I'm a student" and "I'm a Partner", so the
 - Major, graduation year and semester, GPA (the student decides whether Partners see it)
 - **Career interest:** internship, full-time, or both
 - **Technical focus:** a one-line specialty, e.g. "Embedded Software & Controls"
-- **Project experience:** a short description of what the student personally built on the car
+- **Project experience:** what the student personally built on the car, 350 words at most
 - **Skills:** picked from an admin-managed standard list (tools, languages, manufacturing methods, disciplines)
 - LinkedIn, GitHub and portfolio links
 - **Citizenship / work authorization:**
@@ -51,7 +52,10 @@ The login page has two entry points, "I'm a student" and "I'm a Partner", so the
   - Other / will require work visa support
   - Prefer not to say
 - Resume (PDF)
-- Portfolio: up to 3 extra files of any type (pdf, docx, pptx, …), 10 MB each
+- Portfolio: up to 3 pieces. Files of any type (pdf, docx, pptx, …) up to 10 MB each, and at most one video: an upload (MP4, MOV or WebM, 3 minutes and 100 MB at most) or a YouTube, Vimeo, Loom or Google Drive link. Supabase's free plan caps any single upload at 50 MB, so on that plan bigger videos go in as links.
+- Photo (optional): cropped to a square in the browser; Partners see it in place of the Google photo
+
+Partners see the resume first, then the work on the car, then skills, with the details, contact links and portfolio beside them.
 
 ## Resume book filters (Partner side)
 
@@ -124,7 +128,7 @@ Brand-locked to the [LHR Brand Book](https://stormy-asparagus-6c0.notion.site/Br
 - **Logo:**
   - Logoblock where it's legible, team logos per team, shortmark for the favicon
   - White variant on dark backgrounds, never recolored
-  - **"RECRUITMENT" descriptor** in Montserrat caps next to the logo
+  - **"CAREERS" descriptor** in Montserrat caps next to the logo
 - **Naming:** "Longhorn Racing" / "LHR" / "LHRs", "LHRe", "LHRc". Never "IC" or "EV" in public copy.
 - **Voice:** professional and approachable, technical yet digestible
 - **Photos:** pulled from the Solar, Electric and Combustion gallery pages on longhornracing.org

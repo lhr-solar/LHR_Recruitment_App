@@ -117,7 +117,7 @@ port = 54324
 [storage]
 enabled = true
 # The maximum file size allowed (e.g. "5MB", "500KB").
-file_size_limit = "50MiB"
+file_size_limit = "100MiB"
 
 # Uncomment to configure local storage buckets
 # [storage.buckets.images]
@@ -253,11 +253,11 @@ otp_expiry = 3600
 # Sign-in links go through /auth/confirm so they work in any browser. Keep these in step with the
 # templates pasted into the hosted project (see README).
 [auth.email.template.magic_link]
-subject = "Your Longhorn Racing Recruitment sign-in link"
+subject = "Your LHR Careers sign-in link"
 content_path = "./supabase/templates/sign-in.html"
 
 [auth.email.template.confirmation]
-subject = "Your Longhorn Racing Recruitment sign-in link"
+subject = "Your LHR Careers sign-in link"
 content_path = "./supabase/templates/sign-in.html"
 
 # Uncomment to customize notification email template

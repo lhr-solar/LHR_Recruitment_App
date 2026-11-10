@@ -16,10 +16,10 @@ const urbanist = Urbanist({
 
 export const metadata: Metadata = {
   title: {
-    default: "Longhorn Racing Recruitment",
-    template: "%s · Longhorn Racing Recruitment",
+    default: "LHR Careers",
+    template: "%s · LHR Careers",
   },
-  description: "Longhorn Racing's Partners find engineers from the Solar, Electric and Combustion teams.",
+  description: "Longhorn Racing members find internships and jobs with the team's Partner companies.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

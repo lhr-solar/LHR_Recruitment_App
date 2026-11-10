@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { googleSignInEnabled } from "@/lib/auth-providers";
 import { createClient } from "@/lib/supabase/server";
 import { publicEnv } from "@/lib/env";
 
@@ -13,6 +14,7 @@ async function origin() {
 export async function signInWithGoogle(formData: FormData) {
   const door = formData.get("door") === "partner" ? "partner" : "member";
   const next = formData.get("next");
+  if (!(await googleSignInEnabled())) redirect(`/login?door=${door}&error=google_unavailable`);
 
   const callback = new URL("/auth/callback", await origin());
   callback.searchParams.set("door", door);

@@ -11,7 +11,7 @@
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "db:push": "supabase db push",
+    "db:push": "supabase db push --remote",
     "db:types": "supabase gen types typescript --linked > src/lib/supabase/database.types.ts",
     "dev:local": "sh -c \"set -a && . ./.env.docker && set +a && next dev\"",
     "db:start": "supabase start",
@@ -20,6 +20,7 @@
     "env:docker": "node scripts/write-local-env.mjs",
     "docker:up": "docker compose up --build web",
     "docker:preview": "docker compose --profile cloudflare up --build preview",
+    "docker:refresh": "docker compose exec web sh -c 'rm -rf /app/.next/*' && docker compose restart web",
     "docker:down": "docker compose --profile cloudflare down"
   },
   "dependencies": {

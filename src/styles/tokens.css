@@ -61,6 +61,7 @@
   --dur-micro: 120ms;
   --dur-short: 220ms;
   --dur-long: 420ms;
+  --dur-crossfade: 1200ms;
   --control-height: 40px;
   --display-weight: 600;
   --container: 1440px;

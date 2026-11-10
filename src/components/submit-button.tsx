@@ -9,13 +9,16 @@ type Props = {
   block?: boolean;
   name?: string;
   value?: string;
+  // For forms submitted by hand (no form action), which useFormStatus can't see.
+  busy?: boolean;
 };
 
 // A form's submit button that shows its own pending state.
-export function SubmitButton({ children, pendingLabel, variant = "primary", block, name, value }: Props) {
-  const { pending, data } = useFormStatus();
+export function SubmitButton({ children, pendingLabel, variant = "primary", block, name, value, busy: busyProp }: Props) {
+  const status = useFormStatus();
+  const pending = busyProp ?? status.pending;
   // When a form has several submit buttons, only the one that was pressed shows the pending label.
-  const isThisButton = !name || data?.get(name) === value;
+  const isThisButton = busyProp !== undefined || !name || status.data?.get(name) === value;
   const busy = pending && isThisButton;
 
   return (

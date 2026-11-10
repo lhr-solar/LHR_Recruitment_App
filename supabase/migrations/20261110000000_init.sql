@@ -1,4 +1,4 @@
--- Longhorn Racing Recruitment: initial schema.
+-- LHR Careers: initial schema.
 -- Terminology: companies are "partners" everywhere (UT Austin regulations forbid "sponsor").
 
 -- ─────────────────────────────────────────────────────────────

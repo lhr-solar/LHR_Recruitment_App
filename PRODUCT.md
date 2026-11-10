@@ -44,7 +44,7 @@ Every candidate builds race cars on a named team and subsystem. A Partner can fi
 
 From the LHR Brand Book (Notion):
 - Name: "Longhorn Racing" or "LHR". Team acronyms are LHRs, LHRe and LHRc. "IC" and "EV" are never used in public copy, and "UT Austin's LHR" is never used.
-- Logo hierarchy: logoblock, then primary or team logo, then the three-stripe shortmark (favicon), then the wordmark. Full-color logo on light backgrounds, white on dark. Never recolor, crop or fade it, or use a black version. Descriptors such as "RECRUITMENT" are set in Montserrat caps and always paired with the logo.
+- Logo hierarchy: logoblock, then primary or team logo, then the three-stripe shortmark (favicon), then the wordmark. Full-color logo on light backgrounds, white on dark. Never recolor, crop or fade it, or use a black version. Descriptors such as "CAREERS" are set in Montserrat caps and always paired with the logo.
 - Voice: professional and approachable, technical yet digestible, enthusiastic and deliberate, playful yet polished.
 - UT Burnt Orange #BF5700 is trademarked. Avoid it and colors near it.
 

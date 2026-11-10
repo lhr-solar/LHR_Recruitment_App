@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { GoogleIcon } from "@/components/google-icon";
 import { Lockup } from "@/components/lockup";
 import { getViewer, homeFor } from "@/lib/auth";
-import { photoOfTheDay } from "@/lib/photos";
+import { googleSignInEnabled } from "@/lib/auth-providers";
+import { SIGN_IN_PHOTOS, firstPhotoIndex } from "@/lib/photos";
 import { signInWithGoogle } from "./actions";
 import { MagicLinkForm } from "./magic-link-form";
+import { SignInPhotos } from "./sign-in-photos";
 
 export const metadata: Metadata = { title: "Sign in" };
 
 // Local testing has no Google credentials, so members can get an emailed link there instead.
 const memberEmailSignIn = process.env.NEXT_PUBLIC_MEMBER_EMAIL_SIGNIN === "true";
-
 
 const ERRORS: Record<string, string> = {
   not_utexas:
@@ -35,25 +35,15 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const viewer = await getViewer();
   if (viewer && viewer.accountType && !errorKey) redirect(homeFor(viewer));
 
-  const photo = photoOfTheDay();
+  const google = await googleSignInEnabled();
   const error = errorKey ? (ERRORS[errorKey] ?? ERRORS.claim_failed) : null;
 
   return (
     <main className="signin">
-      <figure className="signin-photo">
-        <Image
-          src={photo.src}
-          alt=""
-          fill
-          priority
-          sizes="(max-width: 60rem) 100vw, 55vw"
-          style={{ objectFit: "cover", objectPosition: photo.position }}
-        />
-        <figcaption className="signin-caption">{photo.caption}</figcaption>
-      </figure>
+      <SignInPhotos photos={SIGN_IN_PHOTOS} start={firstPhotoIndex()} />
 
       <section className="signin-panel" aria-labelledby="signin-title">
-        <Link href="/login" className="signin-lockup" aria-label="Longhorn Racing Recruitment">
+        <Link href="/login" className="signin-lockup" aria-label="LHR Careers">
           <Lockup height={52} />
         </Link>
 
@@ -88,42 +78,45 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
 
           {door === "member" ? (
             <div className="door-panel">
-              <p className="door-copy">Use your UT Google account, the one ending in @utexas.edu.</p>
-              <form action={signInWithGoogle}>
-                <input type="hidden" name="door" value="member" />
-                <input type="hidden" name="next" value={next} />
-                <button type="submit" className="btn btn-primary btn-block">
-                  <GoogleIcon />
-                  Continue with Google
-                </button>
-              </form>
+              {google && (
+                <>
+                  <p className="door-copy">Use your UT Google account, the one ending in @utexas.edu.</p>
+                  <GoogleButton door="member" next={next} />
+                </>
+              )}
               {memberEmailSignIn && (
                 <>
-                  <p className="door-divider">
-                    <span>or get a link at your UT email (local testing)</span>
-                  </p>
-                  <MagicLinkForm door="member" label="UT email" />
+                  {google ? (
+                    <p className="door-divider">
+                      <span>or get a link at your UT email (local testing)</span>
+                    </p>
+                  ) : (
+                    <p className="door-copy">We&apos;ll email a sign-in link to your @utexas.edu address.</p>
+                  )}
+                  <MagicLinkForm door="member" label="UT email" primary={!google} />
                 </>
+              )}
+              {!google && !memberEmailSignIn && (
+                <div className="notice notice-error" role="alert">
+                  <p>Member sign-in isn&apos;t turned on yet. Tell an LHR officer.</p>
+                </div>
               )}
               <p className="door-note">Not on your team&apos;s roster yet? You can ask your leads to add you after signing in.</p>
             </div>
           ) : (
             <div className="door-panel">
               <p className="door-copy">For recruiters at Longhorn Racing partner companies.</p>
-              <form action={signInWithGoogle}>
-                <input type="hidden" name="door" value="partner" />
-                <input type="hidden" name="next" value={next} />
-                <button type="submit" className="btn btn-primary btn-block">
-                  <GoogleIcon />
-                  Continue with Google
-                </button>
-              </form>
-              <p className="door-divider">
-                <span>or use your work email</span>
-              </p>
-              <MagicLinkForm door="partner" label="Work email" />
+              {google && (
+                <>
+                  <GoogleButton door="partner" next={next} />
+                  <p className="door-divider">
+                    <span>or use your work email</span>
+                  </p>
+                </>
+              )}
+              <MagicLinkForm door="partner" label="Work email" primary={!google} />
               <p className="door-note">
-                New to LHR Recruitment?{" "}
+                New to LHR Careers?{" "}
                 <Link href="/partners/request" className="link">
                   Request Partner access
                 </Link>
@@ -135,5 +128,18 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
         <p className="signin-foot">Longhorn Racing @ The University of Texas at Austin</p>
       </section>
     </main>
+  );
+}
+
+function GoogleButton({ door, next }: { door: "member" | "partner"; next: string }) {
+  return (
+    <form action={signInWithGoogle}>
+      <input type="hidden" name="door" value={door} />
+      <input type="hidden" name="next" value={next} />
+      <button type="submit" className="btn btn-primary btn-block">
+        <GoogleIcon />
+        Continue with Google
+      </button>
+    </form>
   );
 }

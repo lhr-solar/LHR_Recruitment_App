@@ -9,7 +9,7 @@ export default function PartnerRequestPage() {
   return (
     <div className="standalone">
       <header className="standalone-bar">
-        <Link href="/login" className="signin-lockup" aria-label="Longhorn Racing Recruitment">
+        <Link href="/login" className="signin-lockup" aria-label="LHR Careers">
           <Lockup height={44} />
         </Link>
       </header>

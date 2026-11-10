@@ -1,5 +1,5 @@
 ---
-name: Longhorn Racing Recruitment
+name: LHR Careers
 description: Longhorn Racing's Partners find engineers from the Solar, Electric and Combustion teams.
 colors:
   accent: "#045F85"
@@ -197,7 +197,7 @@ components:
     padding: "4px 12px"
 ---
 
-# Design System: Longhorn Racing Recruitment
+# Design System: LHR Careers
 
 ## Overview
 
@@ -207,7 +207,7 @@ A working tool that could only belong to Longhorn Racing. The system is the LHR 
 
 Density is that of a quiet tool. Pages open on a noun title and a single line of context, then go straight to panels, forms and tables. Tables are built from hairline rules and alignment, never zebra bands. Every surface sits flat; depth is drawn with 1px rules and tonal steps between Light Gray, white and a near-white mist.
 
-The one expressive surface is sign-in: a full-height team photograph (one of the three teams, rotating daily) beside a white panel holding the RECRUITMENT lockup, a "Sign in" headline, one sentence, a two-door switch (LHR member / Partner) and Google sign-in as the primary action.
+The one expressive surface is sign-in: a full-height team photograph (one of the three teams, rotating daily) beside a white panel holding the CAREERS lockup, a "Sign in" headline, one sentence, a two-door switch (LHR member / Partner) and Google sign-in as the primary action.
 
 **Key Characteristics:**
 - Ocean Blue on Light Gray with white surfaces; ink-blue text, never pure black.
@@ -222,7 +222,7 @@ The one expressive surface is sign-in: a full-height team photograph (one of the
 A cool, blue-gray palette anchored by one saturated brand blue, with three warm team ambers held in reserve for team identity.
 
 ### Primary
-- **Ocean Blue** (accent): primary buttons, links, quiet buttons, the active door and nav item, the selected team tile border, the "Recruitment" product label in the top bar, and every focus ring.
+- **Ocean Blue** (accent): primary buttons, links, quiet buttons, the active door and nav item, the selected team tile border, the "Careers" product label in the top bar, and every focus ring.
 - **Deep Ocean** (accent-hover): primary button hover, and text in info notices on the blue wash.
 - **Ocean Wash** (accent-wash): background of the active nav link, the selected team tile, quiet-button hover and info notices.
 
@@ -237,7 +237,7 @@ A cool, blue-gray palette anchored by one saturated brand blue, with three warm 
 - **Soft Ink** (ink-2): page intro lines, table messages, nav links at rest, hover borders on controls.
 - **Slate** (muted): secondary text such as hints, table headers, account names, inactive doors and placeholders. This is the secondary text colour; it passes 4.5:1 on white and Light Gray.
 - **Control Gray** (control): 1px borders on inputs, secondary buttons and team tiles (non-text, meets 3:1).
-- **Mid Gray** (brand-gray): the brand book's Mid Gray. Decorative only: the divider between the logo and "Recruitment" in the top bar.
+- **Mid Gray** (brand-gray): the brand book's Mid Gray. Decorative only: the divider between the logo and "Careers" in the top bar.
 - **Rule** (rule): panel borders, table header and bar borders, the "or" divider lines, the outline of the active door.
 
 ### Status
@@ -268,13 +268,13 @@ A cool, blue-gray palette anchored by one saturated brand blue, with three warm 
 - **Lede** (Urbanist 400, 1.2rem, 1.45): the single sentence under the sign-in headline.
 - **Body** (Urbanist 400, 1rem, 1.55): paragraphs and input text, capped at 65ch; page intro lines at 60ch.
 - **Small body** (Urbanist 400, 0.875rem): hints, notices, table cells, door notes, captions.
-- **Label** (Montserrat 600, 0.875rem, line-height 1): buttons, door options, team names, and the "Recruitment" product label (at 500).
+- **Label** (Montserrat 600, 0.875rem, line-height 1): buttons, door options, team names, and the "Careers" product label (at 500).
 - **Field label** (Urbanist 600, 0.875rem): form labels, legends, table header cells, primary cell text; nav links use this weight and size in ink-2.
 
 Headings use -0.01em tracking and balanced wrapping. Tabular numerals in numeric cells.
 
 ### Named Rules
-**The Title Case Voice Rule.** Montserrat is set at 600 in sentence case. Uppercase Montserrat is reserved for the RECRUITMENT descriptor inside the lockup artwork, which is never re-typeset in live text.
+**The Title Case Voice Rule.** Montserrat is set at 600 in sentence case. Uppercase Montserrat is reserved for the CAREERS descriptor inside the lockup artwork, which is never re-typeset in live text.
 
 **The Eurostile Rule.** Eurostile Extended exists only inside the logo files. It is never loaded as a web font.
 
@@ -282,8 +282,8 @@ Headings use -0.01em tracking and balanced wrapping. Tabular numerals in numeric
 
 Two layouts, both centred and single-column at their core.
 
-- **App shell:** a sticky white top bar (60px tall, 1px Rule bottom border) holding the primary logo, a Mid Gray divider and "Recruitment", then the nav links, then the account name and a quiet "Sign out" pushed right. There is no sidebar. Content sits in a 76rem column with 24px side padding, 40px above and 96px below. Below 48rem the nav and account collapse into a "Menu" disclosure sheet and padding tightens to 16px.
-- **Standalone pages** (Partner access request): the RECRUITMENT lockup at the top of a 40rem column, with no top bar.
+- **App shell:** a sticky white top bar (60px tall, 1px Rule bottom border) holding the primary logo, a Mid Gray divider and "Careers", then the nav links, then the account name and a quiet "Sign out" pushed right. There is no sidebar. Content sits in a 76rem column with 24px side padding, 40px above and 96px below. Below 48rem the nav and account collapse into a "Menu" disclosure sheet and padding tightens to 16px.
+- **Standalone pages** (Partner access request): the CAREERS lockup at the top of a 40rem column, with no top bar.
 - **Sign-in:** a two-column grid at 1.15fr : 1fr, so the photograph takes roughly 54% of the width at full height. The panel column centres its content at a 26rem max width with 40px between lockup, body and footer. Below 60rem the photo becomes a band 32vh tall (max 260px) above the panel.
 - **Page head:** noun title, then one line of Soft Ink context, 8px apart, 40px above the first panel.
 - **Narrow tasks:** single-task forms cap at 40rem. Two-field rows sit side by side and stack below 40rem; the three team tiles go to one column at the same width.
@@ -345,13 +345,13 @@ A two-option segmented switch on a Light Gray track (4px padding, 12px radius). 
 Radio tiles in a three-up grid: white, 1px Control Gray border, 8px radius, 16px padding, the official team logo above the team name in Montserrat 600, and the team-colour stripe along the bottom edge. Selected tiles take an Ocean Blue border doubled by a 1px inset ring on Ocean Wash; focus shows the standard 2px outline around the tile.
 
 ### Brand Lockup
-The RECRUITMENT lockup (LHR logo over the descriptor) heads sign-in at 52px and standalone pages at 44px. The app bar uses the primary logo alone at 22px followed by "Recruitment" in Montserrat 500 Ocean Blue after a Mid Gray divider.
+The CAREERS lockup (LHR logo over the descriptor) heads sign-in at 52px and standalone pages at 44px. The app bar uses the primary logo alone at 22px followed by "Careers" in Montserrat 500 Ocean Blue after a Mid Gray divider.
 
 ## Do's and Don'ts
 
 ### Do:
 - **Do** use only the official LHR logo files in `public/brand/`: full colour on light grounds, the white version on dark. Follow the brand book's order: logoblock, then primary or team logo, then the three-stripe shortmark (favicon), then the wordmark.
-- **Do** pair any descriptor such as "RECRUITMENT" with the logo, set in Montserrat caps per the brand book's logo-descriptor rule.
+- **Do** pair any descriptor such as "CAREERS" with the logo, set in Montserrat caps per the brand book's logo-descriptor rule.
 - **Do** open every app page with a noun title at Headline size (about 28px) and one line of context.
 - **Do** mark teams with their own amber (Solar #FF9404, Electric #FFB526, Combustion #FFC871) and their official team logo, and nowhere else.
 - **Do** use real team photographs from the longhornracing.org Solar, Electric and Combustion galleries for imagery.
