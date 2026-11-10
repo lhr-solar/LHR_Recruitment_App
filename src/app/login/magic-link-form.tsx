@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { sendMagicLink, type MagicLinkState } from "./actions";
 import { SubmitButton } from "@/components/submit-button";
 
-export function MagicLinkForm() {
+export function MagicLinkForm({ door, label }: { door: "member" | "partner"; label: string }) {
   const [state, formAction] = useActionState<MagicLinkState, FormData>(sendMagicLink, { status: "idle" });
 
   if (state.status === "sent") {
@@ -21,9 +21,10 @@ export function MagicLinkForm() {
 
   return (
     <form action={formAction} className="grid gap-[var(--space-sm)]" noValidate>
+      <input type="hidden" name="door" value={door} />
       <div className="field">
         <label className="field-label" htmlFor="email">
-          Work email
+          {label}
         </label>
         <input
           id="email"

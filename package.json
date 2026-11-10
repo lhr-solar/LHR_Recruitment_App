@@ -12,7 +12,15 @@
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "db:push": "supabase db push",
-    "db:types": "supabase gen types typescript --linked > src/lib/supabase/database.types.ts"
+    "db:types": "supabase gen types typescript --linked > src/lib/supabase/database.types.ts",
+    "dev:local": "sh -c \"set -a && . ./.env.docker && set +a && next dev\"",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "env:docker": "node scripts/write-local-env.mjs",
+    "docker:up": "docker compose up --build web",
+    "docker:preview": "docker compose --profile cloudflare up --build preview",
+    "docker:down": "docker compose --profile cloudflare down"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

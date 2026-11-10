@@ -1,10 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { requestOrigin } from "@/lib/request-origin";
 import { createClient } from "@/lib/supabase/server";
 import { finishSignIn, parseDoor } from "@/lib/sign-in";
 
 // Google OAuth returns here with a one-time code.
 export async function GET(request: NextRequest) {
-  const { searchParams, origin } = request.nextUrl;
+  const { searchParams } = request.nextUrl;
+  const origin = requestOrigin(request);
   const code = searchParams.get("code");
   const door = parseDoor(searchParams.get("door"));
 

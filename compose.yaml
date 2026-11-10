@@ -1,0 +1,39 @@
+# Local development. Works with OrbStack and Docker Desktop (and Docker Engine on Linux).
+# Supabase runs separately through the Supabase CLI (`npm run db:start`); see README › Local development.
+# Port 3000 taken on your machine? Run with APP_PORT=3001 (and PREVIEW_PORT for the preview).
+name: lhr-recruitment
+
+x-app: &app
+  build: .
+  env_file:
+    - path: .env.docker
+      required: true
+  environment:
+    SUPABASE_FORWARD_TO: host.docker.internal:54321
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  volumes:
+    - .:/app
+    # Keep the container's own Linux dependencies and build output out of the host folder.
+    - /app/node_modules
+    - /app/.next
+
+services:
+  # Next.js dev server with hot reload: http://localhost:${APP_PORT:-3000}
+  web:
+    <<: *app
+    ports:
+      - "${APP_PORT:-3000}:3000"
+
+  # The Cloudflare Worker build, run in workerd like production: http://localhost:${PREVIEW_PORT:-8787}
+  preview:
+    <<: *app
+    profiles: ["cloudflare"]
+    # .open-next and .wrangler are written into the project folder (both gitignored): OpenNext
+    # replaces its output folder on every build, which a volume mount point would block.
+    command: ["sh", "-c", "npx opennextjs-cloudflare build && npx wrangler dev --ip 0.0.0.0 --port 8787"]
+    environment:
+      SUPABASE_FORWARD_TO: host.docker.internal:54321
+      NEXT_PUBLIC_SITE_URL: http://localhost:${PREVIEW_PORT:-8787}
+    ports:
+      - "${PREVIEW_PORT:-8787}:8787"

@@ -7,17 +7,55 @@ Plan: [`docs/PLAN.md`](docs/PLAN.md) · Product context: [`PRODUCT.md`](PRODUCT.
 
 **Stack:** Next.js 16 (App Router) on Cloudflare Workers via OpenNext · Supabase (Postgres + RLS, Auth, Storage) · Resend.
 
-## Run it locally
+## Local development (Docker)
+
+Everything runs on your machine: your own Postgres, Auth, Storage and a fake inbox, so you never touch the real project. It works with **OrbStack** or **Docker Desktop** (or Docker Engine on Linux); the commands are the same.
+
+**Needs:** Node 22+ and OrbStack or Docker Desktop, running.
 
 ```bash
 npm install
-cp .env.example .env.local   # fill in the Supabase values (below)
-npm run dev                  # http://localhost:3000
+npm run db:start      # local Supabase in Docker (first run downloads images)
+npm run env:docker    # writes .env.docker from the running stack
+npm run docker:up     # the app in a container: http://localhost:3000
 ```
 
-`npm run typecheck`, `npm run lint`, and `npm run preview` (builds the Cloudflare worker and runs it locally) are the checks to run before deploying.
+Or run the app on your machine instead of in a container: `npm run dev:local` (uses the same `.env.docker`).
+
+**Port 3000 already in use?** Pick another for both steps: `APP_PORT=3001 npm run env:docker` then `APP_PORT=3001 npm run docker:up`, and open http://localhost:3001.
+
+| Open | For |
+|---|---|
+| http://localhost:3000 | the app |
+| http://127.0.0.1:54324 | **Mailpit**: every sign-in email lands here; nothing is really sent |
+| http://127.0.0.1:54323 | **Supabase Studio**: tables, auth users, storage |
+
+**Signing in locally.** Google is off locally (no credentials needed), so both doors use emailed links, which arrive in Mailpit. Test accounts from `supabase/seed.sql`:
+
+| Door | Email | What happens |
+|---|---|---|
+| LHR member | `ishan.singhal@utexas.edu` (or any seed admin) | Admin |
+| LHR member | `solar.member@utexas.edu`, `electric.member@utexas.edu`, `combustion.member@utexas.edu` | On the roster: straight to My profile |
+| LHR member | any other `@utexas.edu`, e.g. `new.member@utexas.edu` | Asks to join a team; approve it as an admin |
+| Partner | `recruiter@partner.example` | Invited to Test Partner Co: Partner home |
+| Partner | any other address, e.g. `someone@company.example` | Partner access request form |
+
+**Other commands**
+
+| Command | Does |
+|---|---|
+| `npm run db:reset` | Wipes the local database and reapplies migrations + seed |
+| `npm run docker:preview` | Builds the Cloudflare Worker and runs it in workerd, like production: http://localhost:8787 |
+| `npm run docker:down` | Stops the app containers |
+| `npm run db:stop` | Stops local Supabase |
+
+After changing `package.json` dependencies, rebuild with `docker compose build web` and recreate the container's `node_modules` with `docker compose up -V web`.
+
+Before deploying: `npm run typecheck`, `npm run lint`, and `npm run docker:preview`.
 
 ## One-time setup
+
+These steps set up the **hosted** Supabase project and production. For local work, the section above is all you need.
 
 ### 1. Supabase database
 
@@ -35,14 +73,14 @@ Seed admins (become admins on first sign-in): `ishan.singhal@utexas.edu`, `ravi.
 
 ### 2. Keys
 
-Supabase → **Project Settings → API Keys**. Put these in `.env.local`:
+Supabase → **Project Settings → API Keys**. Put these in `.env.local` (to run the app against the hosted project) and in the production build environment:
 
 | Variable | Where it comes from |
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Project URL |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key (`sb_publishable_…`), or the legacy anon key |
 | `SUPABASE_SECRET_KEY` | Secret key (`sb_secret_…`). Server only; never commit it |
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` locally, the real domain in production |
+| `NEXT_PUBLIC_SITE_URL` | The production domain |
 
 ### 3. Google sign-in
 
@@ -58,15 +96,17 @@ Supabase → **Authentication → URL Configuration**
 
 - **Site URL**: your production URL (e.g. `https://recruit.longhornracing.org`)
 - **Redirect URLs**: add
-  - `http://localhost:3000/auth/**`
   - `https://recruit.longhornracing.org/auth/**`
+  - `http://localhost:3000/auth/**` (only if you run the app locally against the hosted project)
 
-Supabase → **Authentication → Emails → Magic Link**, so Partner sign-in links work in any browser:
+  Sign-in emails link to these redirect URLs, so an address missing from this list breaks email sign-in.
+
+Supabase → **Authentication → Emails**: paste this into both **Magic Link** and **Confirm signup** (a first-time Partner gets the second), so sign-in links work in any browser. It's the same file local Supabase uses, `supabase/templates/sign-in.html`:
 
 ```html
 <h2>Sign in to Longhorn Racing Recruitment</h2>
-<p><a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email">Sign in</a></p>
-<p>This link works once and expires in an hour.</p>
+<p><a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email">Sign in</a></p>
+<p>This link works once and expires in an hour. If you didn't ask for it, you can ignore this email.</p>
 ```
 
 Before launch, set **Authentication → Emails → SMTP Settings** to Resend (`smtp.resend.com`, port 465, user `resend`, password = Resend API key) so sign-in emails aren't rate-limited.
@@ -94,6 +134,9 @@ Admin-allowlisted emails become admins whichever door they use. The database fun
 
 ```
 supabase/migrations/   schema, row-level security, storage, seeds
+supabase/seed.sql      local-only test accounts
+supabase/templates/    sign-in email template
+compose.yaml, Dockerfile, docker/   local app containers (OrbStack or Docker Desktop)
 src/proxy.ts           refreshes the Supabase session; sends signed-out visitors to /login
 src/lib/               auth (viewer + routing), Supabase clients, sign-in, teams, photos
 src/app/login          two-door sign-in

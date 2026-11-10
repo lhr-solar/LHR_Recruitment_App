@@ -11,6 +11,9 @@ import { MagicLinkForm } from "./magic-link-form";
 
 export const metadata: Metadata = { title: "Sign in" };
 
+// Local testing has no Google credentials, so members can get an emailed link there instead.
+const memberEmailSignIn = process.env.NEXT_PUBLIC_MEMBER_EMAIL_SIGNIN === "true";
+
 
 const ERRORS: Record<string, string> = {
   not_utexas:
@@ -94,6 +97,14 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
                   Continue with Google
                 </button>
               </form>
+              {memberEmailSignIn && (
+                <>
+                  <p className="door-divider">
+                    <span>or get a link at your UT email (local testing)</span>
+                  </p>
+                  <MagicLinkForm door="member" label="UT email" />
+                </>
+              )}
               <p className="door-note">Not on your team&apos;s roster yet? You can ask your leads to add you after signing in.</p>
             </div>
           ) : (
@@ -110,7 +121,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
               <p className="door-divider">
                 <span>or use your work email</span>
               </p>
-              <MagicLinkForm />
+              <MagicLinkForm door="partner" label="Work email" />
               <p className="door-note">
                 New to LHR Recruitment?{" "}
                 <Link href="/partners/request" className="link">

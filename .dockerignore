@@ -1,0 +1,13 @@
+node_modules
+.next
+.open-next
+.wrangler
+.git
+.env*
+!.env.example
+.taste-skill
+.hallmark/shots
+.impeccable/review
+supabase/.temp
+supabase/.branches
+*.tsbuildinfo

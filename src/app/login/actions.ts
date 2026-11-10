@@ -40,6 +40,7 @@ export type MagicLinkState =
 const emailSchema = z.email();
 
 export async function sendMagicLink(_prev: MagicLinkState, formData: FormData): Promise<MagicLinkState> {
+  const door = formData.get("door") === "member" ? "member" : "partner";
   const raw = String(formData.get("email") ?? "").trim().toLowerCase();
   const parsed = emailSchema.safeParse(raw);
   if (!parsed.success) {
@@ -49,7 +50,8 @@ export async function sendMagicLink(_prev: MagicLinkState, formData: FormData): 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithOtp({
     email: parsed.data,
-    options: { emailRedirectTo: new URL("/auth/confirm", await origin()).toString() },
+    // The door rides along in the link so /auth/confirm knows which sign-in this was.
+    options: { emailRedirectTo: new URL(`/auth/confirm?door=${door}`, await origin()).toString() },
   });
 
   if (error) {
