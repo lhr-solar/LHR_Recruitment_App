@@ -581,7 +581,7 @@ html:has(.save-bar) { scroll-padding-bottom: calc(var(--control-height) + 2 * va
 .pv-head[data-team="electric"] { --team-color: var(--color-electric); }
 .pv-head[data-team="combustion"] { --team-color: var(--color-combustion); }
 .pv-avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background: var(--color-accent-wash); }
-.pv-initials { display: grid; place-items: center; color: var(--color-accent); font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; }
+.avatar-initials { display: grid; place-items: center; color: var(--color-accent); font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; }
 .pv-identity { display: grid; gap: var(--space-2xs); justify-items: start; min-width: 0; }
 .pv-identity h1 { font-size: var(--text-2xl); }
 .pv-role { color: var(--color-ink-2); }
@@ -616,3 +616,116 @@ html:has(.save-bar) { scroll-padding-bottom: calc(var(--control-height) + 2 * va
 }
 .pv-missing { background: var(--color-paper-3); border-style: dashed; }
 .pv-missing p { color: var(--color-ink-2); }
+
+/* ── Shared ─────────────────────────────────────────────────────────────── */
+.back-link { justify-self: start; }
+.form-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-md); }
+.subnav { display: flex; flex-wrap: wrap; gap: var(--space-2xs); margin-bottom: var(--space-lg); }
+.table-filter { display: flex; gap: var(--space-xs); }
+.table-filter .input { width: auto; min-width: 12rem; }
+.table-pages { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); padding: var(--space-md) var(--space-lg); border-top: 1px solid var(--color-rule); font-size: var(--text-sm); color: var(--color-muted); }
+
+/* ── Resume book: filters beside a list of student cards ────────────────── */
+.book { display: grid; grid-template-columns: 18rem minmax(0, 1fr); gap: var(--space-lg); align-items: start; }
+.book-filters { display: grid; gap: var(--space-lg); padding: var(--space-lg); }
+.book-us-only { font-weight: 600; }
+.book-team-dot { flex: none; width: 10px; height: 10px; border-radius: 2px; background: var(--team-color); }
+.book-team-dot[data-team="solar"] { --team-color: var(--color-solar); }
+.book-team-dot[data-team="electric"] { --team-color: var(--color-electric); }
+.book-team-dot[data-team="combustion"] { --team-color: var(--color-combustion); }
+.book-terms { display: grid; gap: var(--space-xs); }
+.book-filters .segmented { display: flex; justify-self: stretch; }
+.book-filters .segment { flex: 1; }
+.book-filters .segment span { justify-content: center; width: 100%; padding-inline: var(--space-xs); white-space: nowrap; }
+.book-skills-body { display: grid; gap: var(--space-md); }
+.book-skills > summary { display: flex; align-items: center; gap: var(--space-xs); min-height: 32px; cursor: pointer; border-radius: var(--radius-chip); }
+.book-skills > summary { list-style: none; }
+.book-skills > summary::-webkit-details-marker { display: none; }
+.book-skills > summary::after { content: ""; margin-left: auto; width: 8px; height: 8px; border-right: 2px solid var(--color-muted); border-bottom: 2px solid var(--color-muted); transform: translateY(-2px) rotate(45deg); transition: transform var(--dur-micro) var(--ease-out); }
+.book-skills[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+.book-skills > summary:has(.book-skills-count)::after { margin-left: 0; }
+.book-skills > summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.book-skills[open] > summary { margin-bottom: var(--space-xs); }
+.book-skills-count { margin-left: auto; margin-right: var(--space-xs); font-weight: 400; color: var(--color-accent); }
+.book-clear { justify-self: start; }
+
+.book-results { display: grid; gap: var(--space-md); min-width: 0; }
+.book-results-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); min-height: var(--control-height); }
+.book-count { font-size: var(--text-lg); }
+.book-sort { display: flex; align-items: center; gap: var(--space-xs); font-size: var(--text-sm); color: var(--color-muted); }
+.book-sort .input { width: auto; }
+.book-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); margin: 0; padding: 0; list-style: none; }
+.book-list > li { display: grid; }
+
+.book-card {
+  position: relative;
+  display: grid;
+  gap: var(--space-sm);
+  align-content: start;
+  padding: var(--space-lg) var(--space-lg) var(--space-md);
+  overflow: hidden;
+  transition: border-color var(--dur-micro) var(--ease-out);
+}
+.book-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: var(--team-color, var(--color-accent)); }
+.book-card[data-team="solar"] { --team-color: var(--color-solar); }
+.book-card[data-team="electric"] { --team-color: var(--color-electric); }
+.book-card[data-team="combustion"] { --team-color: var(--color-combustion); }
+.book-card:hover { border-color: var(--color-control); }
+.book-card:has(.book-card-link:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.book-card-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-sm); }
+.book-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background: var(--color-accent-wash); }
+.book-avatar.avatar-initials { font-size: var(--text-md); }
+.book-card-identity { display: grid; gap: var(--space-3xs); min-width: 0; }
+.book-card-identity h3 { font-size: var(--text-md); overflow-wrap: anywhere; }
+.book-card-link { color: inherit; text-decoration: none; }
+.book-card-link:focus-visible { outline: none; }
+/* The whole card opens the profile; the resume link below sits above this layer. */
+.book-card-link::after { content: ""; position: absolute; inset: 0; }
+.book-card-role { font-size: var(--text-sm); color: var(--color-muted); }
+.book-card-team { align-self: start; }
+.book-card-focus { font-family: var(--font-display); font-weight: 500; color: var(--color-accent); }
+.book-card-facts { font-size: var(--text-sm); color: var(--color-ink-2); }
+.book-card-skills { display: flex; flex-wrap: wrap; gap: var(--space-2xs); margin: 0; padding: 0; list-style: none; }
+.book-card-skills li { padding: var(--space-3xs) var(--space-xs); border-radius: var(--radius-chip); background: var(--color-paper-3); font-size: var(--text-xs); font-weight: 600; color: var(--color-ink-2); }
+.book-card-skills li[data-match] { background: var(--color-accent-wash); color: var(--color-accent-hover); }
+.book-card-skills .book-card-more { background: none; color: var(--color-muted); font-weight: 400; }
+.book-card-actions { display: flex; justify-content: flex-end; padding-top: var(--space-xs); border-top: 1px solid var(--color-paper-3); font-size: var(--text-sm); }
+.book-card-actions a { position: relative; z-index: var(--z-base); }
+
+.book-pages { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); font-size: var(--text-sm); color: var(--color-muted); }
+.book-note { font-size: var(--text-sm); color: var(--color-muted); }
+
+@media (max-width: 60rem) {
+  .book { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 48rem) {
+  .book-list { grid-template-columns: minmax(0, 1fr); }
+  .book-results-head { flex-wrap: wrap; }
+}
+
+/* ── Company page ───────────────────────────────────────────────────────── */
+.logo-row { display: flex; align-items: center; gap: var(--space-md); }
+.logo-frame { flex: none; display: grid; place-items: center; width: 176px; height: 88px; padding: var(--space-sm); border: 1px solid var(--color-rule); border-radius: var(--radius-control); background: var(--color-paper-3); }
+.logo-frame img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.logo-empty { font-size: var(--text-sm); color: var(--color-muted); }
+.photo-controls > .btn-danger { justify-self: start; }
+.member-list { display: grid; margin: 0; padding: 0; list-style: none; font-size: var(--text-sm); }
+.member-list li { padding: var(--space-sm) var(--space-lg); border-bottom: 1px solid var(--color-paper-3); }
+.member-list + .table-message { font-size: var(--text-sm); }
+.company-card { display: grid; gap: var(--space-sm); justify-items: start; }
+.company-card-label { font-size: var(--text-sm); font-weight: 600; color: var(--color-muted); font-family: var(--font-body); letter-spacing: 0; }
+.company-card-logo { display: grid; place-items: center start; width: 100%; height: 56px; }
+.company-card-logo img { max-width: 100%; max-height: 56px; object-fit: contain; }
+.company-card-initial { display: grid; place-items: center; width: 56px; height: 56px; border-radius: var(--radius-control); background: var(--color-accent-wash); color: var(--color-accent); font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; }
+.company-card-name { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; color: var(--color-ink); }
+.company-card-about { font-size: var(--text-sm); color: var(--color-ink-2); white-space: pre-line; overflow-wrap: anywhere; }
+@media (max-width: 40rem) {
+  .logo-row { flex-direction: column; align-items: stretch; }
+  .logo-frame { width: 100%; }
+  .table-filter .input { min-width: 0; flex: 1; }
+}
+
+/* ── Admin: Partner requests ────────────────────────────────────────────── */
+.review-form { display: grid; gap: var(--space-xs); min-width: 15rem; }
+.review-form .input { min-height: 34px; }
+.review-form .row-actions { justify-content: flex-start; }

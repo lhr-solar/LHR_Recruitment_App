@@ -5,7 +5,7 @@ import { useState, useTransition } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { MAX_PHOTO_BYTES, PHOTO_SIZE } from "@/lib/student-options";
 import { removePhoto, savePhoto } from "./actions";
-import { FileDrop } from "./file-drop";
+import { FileDrop } from "@/components/file-drop";
 
 // Crops to a centred square and re-encodes as JPEG: small files, upright, no location data.
 async function squarePhoto(file: File): Promise<Blob | null> {

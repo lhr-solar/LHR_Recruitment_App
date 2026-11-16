@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+// `exact` is for a parent page, such as a section's first tab, that shouldn't light up for its children.
+export function NavLink({ href, exact, children }: { href: string; exact?: boolean; children: React.ReactNode }) {
   const pathname = usePathname();
-  const current = pathname === href || pathname.startsWith(`${href}/`);
+  const current = pathname === href || (!exact && pathname.startsWith(`${href}/`));
   return (
     <Link href={href} className="nav-link" aria-current={current ? "page" : undefined}>
       {children}

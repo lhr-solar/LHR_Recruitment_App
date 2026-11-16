@@ -25,6 +25,27 @@ export type GradSemester = (typeof GRAD_SEMESTERS)[number]["value"];
 
 export const MAX_SKILLS = 20;
 
+// A graduation term, written "2027-spring" in URLs.
+export type Term = { year: number; semester: GradSemester };
+
+export function termKey(term: Term) {
+  return `${term.year}-${term.semester}`;
+}
+
+export function termLabel(term: Term) {
+  return `${GRAD_SEMESTERS.find((s) => s.value === term.semester)?.label} ${term.year}`;
+}
+
+export function parseTerm(value: string): Term | null {
+  const match = /^(\d{4})-(spring|summer|fall)$/.exec(value);
+  return match ? { year: Number(match[1]), semester: match[2] as GradSemester } : null;
+}
+
+// Spring, summer and fall of one year come before the next year's spring.
+export function termIndex(term: Term) {
+  return term.year * 3 + GRAD_SEMESTERS.findIndex((s) => s.value === term.semester);
+}
+
 // Last year through five years out: everyone currently on a team.
 export function gradYears(now = new Date()) {
   const year = now.getFullYear();

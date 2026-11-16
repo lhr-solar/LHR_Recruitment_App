@@ -37,7 +37,7 @@ Or run the app on your machine instead of in a container: `npm run dev:local` (u
 | LHR member | `ishan.singhal@utexas.edu` (or any seed admin) | Admin |
 | LHR member | `solar.member@utexas.edu`, `electric.member@utexas.edu`, `combustion.member@utexas.edu` | On the roster: straight to My profile |
 | LHR member | any other `@utexas.edu`, e.g. `new.member@utexas.edu` | Asks to join a team; approve it as an admin |
-| Partner | `recruiter@partner.example` | Invited to Test Partner Co: Partner home |
+| Partner | `recruiter@partner.example` | Invited to Test Partner Co: the resume book |
 | Partner | any other address, e.g. `someone@company.example` | Partner access request form |
 
 **Other commands**
@@ -142,7 +142,8 @@ src/proxy.ts           refreshes the Supabase session; sends signed-out visitors
 src/lib/               auth (viewer + routing), Supabase clients, sign-in, teams, photos
 src/app/login          two-door sign-in
 src/app/auth/*         OAuth callback, email-link confirm, sign out
-src/app/(app)/*        signed-in screens: join, pending, profile, jobs, partner, admin
+src/app/(app)/*        signed-in screens: join, pending, profile, jobs, partner (resume book, company page), admin (join requests, resume access)
+src/lib/resume-book.ts the resume book: filters, and the logged routes Partners open resumes and files through
 src/app/partners/request  public Partner access request
 src/styles/tokens.css  brand tokens (LHR Brand Book)
 public/brand/          official LHR logos and the CAREERS lockup

@@ -8,7 +8,10 @@ type NavItem = { href: string; label: string };
 function navFor(viewer: Viewer): NavItem[] {
   if (viewer.status !== "active") return [];
   if (viewer.accountType === "partner") {
-    return [{ href: "/partner", label: "Home" }];
+    return [
+      { href: "/partner/students", label: "Resume book" },
+      { href: "/partner/company", label: "Company page" },
+    ];
   }
   const items: NavItem[] = [
     { href: "/profile", label: "My profile" },

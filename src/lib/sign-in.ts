@@ -30,5 +30,5 @@ export async function finishSignIn(supabase: SupabaseClient, door: Door, next: s
   if (claim.account_type === "partner" && claim.status !== "active") return "/pending";
 
   if (next && next.startsWith("/") && !next.startsWith("//")) return next;
-  return claim.account_type === "partner" ? "/partner" : "/profile";
+  return claim.account_type === "partner" ? "/partner/students" : "/profile";
 }

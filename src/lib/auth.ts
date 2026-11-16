@@ -53,7 +53,7 @@ export function homeFor(viewer: Viewer): string {
     return viewer.status === "active" ? "/profile" : "/join";
   }
   if (viewer.accountType === "partner") {
-    return viewer.status === "active" ? "/partner" : "/pending";
+    return viewer.status === "active" ? "/partner/students" : "/pending";
   }
   return "/login?error=unclaimed";
 }

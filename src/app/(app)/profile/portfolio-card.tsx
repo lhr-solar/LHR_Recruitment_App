@@ -18,7 +18,7 @@ import {
 } from "@/lib/student-options";
 import { uploadWithProgress } from "@/lib/upload";
 import { addPortfolioFile, addPortfolioVideo, addPortfolioVideoLink, removePortfolioFile } from "./actions";
-import { FileDrop } from "./file-drop";
+import { FileDrop } from "@/components/file-drop";
 import { PdfIcon } from "./resume-card";
 
 const TOO_BIG_FOR_UPLOAD = "Upload it to YouTube as Unlisted and paste the link below instead.";

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Avatar } from "@/components/avatar";
 import type { PartnerView } from "@/lib/student";
 import { CAREER_INTEREST, CITIZENSHIP, GRAD_SEMESTERS, formatBytes, formatDuration } from "@/lib/student-options";
 import { TEAMS } from "@/lib/teams";
@@ -40,7 +41,7 @@ export function PartnerProfileView({ profile, preview = false }: { profile: Part
   return (
     <article className="pv" aria-labelledby="pv-name">
       <header className="panel pv-head" data-team={profile.team}>
-        <Avatar name={profile.fullName} url={profile.avatarUrl} />
+        <Avatar name={profile.fullName} url={profile.avatarUrl} size={72} className="pv-avatar" />
         <div className="pv-identity">
           {team && <Image src={team.logo} alt={`${team.name} team`} width={76} height={16} unoptimized />}
           <h1 id="pv-name">{profile.fullName}</h1>
@@ -192,24 +193,4 @@ function Missing({ title, text }: { title: string; text: string }) {
 
 function firstName(fullName: string) {
   return fullName.includes("@") ? "them" : fullName.split(/\s+/)[0];
-}
-
-function Avatar({ name, url }: { name: string; url: string | null }) {
-  if (url) {
-    // An uploaded photo (a signed URL) or the Google one; plain img so no image proxy is needed.
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img className="pv-avatar" src={url} alt="" width={72} height={72} referrerPolicy="no-referrer" />;
-  }
-  const initials = name.includes("@")
-    ? name[0].toUpperCase()
-    : name
-        .split(/\s+/)
-        .slice(0, 2)
-        .map((part) => part[0]?.toUpperCase())
-        .join("");
-  return (
-    <span className="pv-avatar pv-initials" aria-hidden="true">
-      {initials}
-    </span>
-  );
 }

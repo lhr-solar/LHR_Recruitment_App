@@ -5,7 +5,7 @@ import { useState, useTransition } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { MAX_FILE_BYTES } from "@/lib/student-options";
 import { removeResume, saveResume } from "./actions";
-import { FileDrop } from "./file-drop";
+import { FileDrop } from "@/components/file-drop";
 
 export function ResumeCard({ userId, url, updated }: { userId: string; url: string | null; updated: string | null }) {
   const router = useRouter();
