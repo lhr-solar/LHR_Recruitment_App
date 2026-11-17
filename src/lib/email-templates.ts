@@ -38,6 +38,9 @@ type Layout = {
   blocks: Block[];
   // Why this person got the email, in the footer.
   reason: string;
+  // Where the logo comes from. App emails attach it inline; Supabase's sign-in email can't, so it
+  // loads from the site.
+  logoSrc?: string;
 };
 
 function esc(value: string) {
@@ -86,7 +89,7 @@ function blockText(block: Block): string {
   return `${block.link.label}: ${block.link.href}`;
 }
 
-function render({ subject, preheader, heading, blocks, reason }: Layout): RenderedEmail {
+function render({ subject, preheader, heading, blocks, reason, logoSrc = `cid:${LOGO_CID}` }: Layout): RenderedEmail {
   const html = `<!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -111,7 +114,7 @@ function render({ subject, preheader, heading, blocks, reason }: Layout): Render
   <tr><td style="background:${COLOR.card};border-radius:8px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr><td class="head-pad" style="padding:32px 40px 0;">
-      <img src="cid:${LOGO_CID}" width="200" height="66" alt="Longhorn Racing Careers" style="display:block;width:200px;height:66px;border:0;outline:none;">
+      <img src="${esc(logoSrc)}" width="200" height="66" alt="Longhorn Racing Careers" style="display:block;width:200px;height:66px;border:0;outline:none;">
     </td></tr>
     <tr><td class="card-pad" style="padding:32px 40px 24px;">
       <h1 style="margin:0 0 20px;font-family:${DISPLAY};font-size:24px;line-height:32px;font-weight:600;color:${COLOR.ink};">${esc(heading)}</h1>
@@ -221,5 +224,25 @@ export function newApplicantEmail({
       { link: { label: "See everyone who applied", href: applicantsUrl } },
     ],
     reason: `You're receiving this because ${jobTitle} is posted on LHR Careers for your company.`,
+  });
+}
+
+// ── Sign-in (sent by Supabase Auth) ─────────────────────────────────────────
+
+// The magic-link and confirm-signup email. Supabase fills in the {{ … }} values, so this is rendered
+// once into supabase/templates/sign-in.html (scripts/write-sign-in-template.mjs) and pasted into the
+// hosted project.
+export function signInEmail() {
+  return render({
+    subject: "Your LHR Careers sign-in link",
+    preheader: "Your one-time link to sign in to LHR Careers.",
+    heading: "Sign in to LHR Careers",
+    blocks: [
+      { p: "Use the button below to sign in. No password needed." },
+      { button: { label: "Sign in to LHR Careers", href: "{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email" } },
+      { note: "This link works once and expires in an hour. If you didn't ask for it, you can ignore this email; no one can sign in without it." },
+    ],
+    reason: "You're receiving this because someone asked to sign in to LHR Careers with this email address.",
+    logoSrc: "{{ .SiteURL }}/brand/email-logo.png",
   });
 }

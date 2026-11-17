@@ -159,12 +159,17 @@ export default async function Home() {
         </section>
 
         <section className="l-members" id="members" aria-labelledby="members-title">
-          <h2 id="members-title">For LHR members</h2>
-          <p className="l-statement l-reveal">One profile with your resume and your work on the car, and jobs posted for you.</p>
-          <div className="l-members-foot l-reveal">
-            <Link href="/login" className="l-button">
-              Member sign in
-            </Link>
+          <div className="l-members-text">
+            <h2 id="members-title">For LHR members</h2>
+            <p className="l-statement l-reveal">One profile with your resume and your work on the car, and jobs posted for you.</p>
+            <div className="l-members-foot l-reveal">
+              <Link href="/login" className="l-button">
+                Member sign in
+              </Link>
+            </div>
+          </div>
+          <div className="l-plate l-members-plate l-reveal">
+            <Image src="/photos/solar-array-bench.jpg" alt="Two Solar members laying out solar cells on the bench" fill sizes="(max-width: 60rem) 100vw, 45vw" />
           </div>
         </section>
 
@@ -215,7 +220,9 @@ export default async function Home() {
             </a>
           </nav>
         </div>
-        <p className="l-footer-note">Photographs by Longhorn Racing. © {new Date().getFullYear()} Longhorn Racing, The University of Texas at Austin.</p>
+        <p className="l-footer-note">
+          Photographs by Longhorn Racing. © {new Date().getFullYear()} Longhorn Racing, The University of Texas at Austin. <Link href="/privacy">Privacy policy</Link>
+        </p>
       </footer>
     </div>
   );

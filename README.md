@@ -106,13 +106,7 @@ Supabase → **Authentication → URL Configuration**
 
   Sign-in emails link to these redirect URLs, so an address missing from this list breaks email sign-in.
 
-Supabase → **Authentication → Emails**: paste this into both **Magic Link** and **Confirm signup** (a first-time Partner gets the second), so sign-in links work in any browser. It's the same file local Supabase uses, `supabase/templates/sign-in.html`:
-
-```html
-<h2>Sign in to LHR Careers</h2>
-<p><a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email">Sign in</a></p>
-<p>This link works once and expires in an hour. If you didn't ask for it, you can ignore this email.</p>
-```
+Supabase → **Authentication → Emails**: in both **Magic Link** and **Confirm signup** (a first-time Partner gets the second), set the subject to `Your LHR Careers sign-in link` and paste the whole of `supabase/templates/sign-in.html` as the body, so sign-in links work in any browser. Local Supabase uses the same file. It's rendered from `src/lib/email-templates.ts` with `node scripts/write-sign-in-template.mjs`; its logo loads from `{{ .SiteURL }}/brand/email-logo.png`, so the Site URL must be the deployed site.
 
 Before launch, set **Authentication → Emails → SMTP Settings** to Resend (`smtp.resend.com`, port 465, user `resend`, password = Resend API key) so sign-in emails aren't rate-limited.
 

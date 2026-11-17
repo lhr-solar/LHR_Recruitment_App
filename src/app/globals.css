@@ -289,6 +289,13 @@ textarea.input { min-height: 96px; padding-block: 10px; resize: vertical; line-h
 .page-head p { color: var(--color-ink-2); max-width: 68ch; text-wrap: pretty; }
 .narrow { max-width: 40rem; }
 
+/* Long-form policy text */
+.legal { display: grid; gap: var(--space-md); color: var(--color-ink-2); }
+.legal h2 { margin-top: var(--space-lg); font-size: var(--text-lg); color: var(--color-ink); }
+.legal h3 { margin-top: var(--space-xs); font-size: var(--text-md); color: var(--color-ink); }
+.legal ul { display: grid; gap: var(--space-xs); margin: 0; padding-left: 1.25rem; }
+.legal strong { color: var(--color-ink); }
+
 /* ── Team choice: the official team logos as radio tiles ───────────────── */
 .team-choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-sm); }
 .team-choice {

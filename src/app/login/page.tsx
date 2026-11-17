@@ -125,7 +125,12 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
           )}
         </div>
 
-        <p className="signin-foot">Longhorn Racing @ The University of Texas at Austin</p>
+        <p className="signin-foot">
+          Longhorn Racing @ The University of Texas at Austin ·{" "}
+          <Link href="/privacy" className="link">
+            Privacy policy
+          </Link>
+        </p>
       </section>
     </main>
   );

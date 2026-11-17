@@ -8,6 +8,15 @@
         "value": "montserrat",
         "createdAt": "2026-11-17T06:52:23.261Z",
         "reason": "Brand book mandates Montserrat for titles (docs/PLAN.md, Design → Type)"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/app/globals.css"
+        ],
+        "createdAt": "2026-11-17T15:19:06.519Z",
+        "reason": "Claude triage: the 3 hits are not side tabs — .pv-head::before and .book-card::before are 3px top team-color strips (team identity, Phase 2/3), and .book-skills summary::after is a CSS chevron drawn with borders"
       }
     ]
   }

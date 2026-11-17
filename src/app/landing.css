@@ -79,7 +79,10 @@
 .l-subsystems li { font-size: 17px; }
 
 /* Members */
-.l-members { display: grid; gap: 40px; padding: var(--gap) var(--m) 0; }
+.l-members { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: center; padding: var(--gap) var(--m) 0; }
+.l-members-text { display: grid; gap: 40px; align-content: center; }
+.l-members-plate { aspect-ratio: 4 / 3; }
+.l-members-plate img { object-position: 50% 50%; }
 .l-members h2 { font-size: clamp(32px, 3.4vw, 52px); line-height: 1.05; }
 .l-members-foot { display: flex; }
 
@@ -112,6 +115,7 @@
 .l-footer-links a { font-size: 16px; color: var(--color-ink-2); text-decoration: none; }
 .l-footer-links a:hover { color: var(--color-accent); text-decoration: underline; }
 .landing .l-footer-note { grid-column: 1 / -1; font-size: 16px; color: var(--color-muted); }
+.landing .l-footer-note a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 
 /* Motion: the hero stripes open like a shutter; each section's parts rise in as they arrive. */
 @keyframes l-shutter { from { clip-path: inset(0 100% 0 0 round 12px); } to { clip-path: inset(0 0 0 0 round 0); } }
@@ -137,7 +141,7 @@
   .l-hero { grid-template-columns: minmax(0, 1fr); min-height: auto; padding: 32px var(--m) 0; gap: 48px; }
   .l-hero-text { padding-right: 0; }
   .l-stripes { --h: clamp(96px, 26vw, 180px); margin-right: calc(-1 * var(--m) - 20vw); }
-  .l-showcase, .l-team-grid, .l-cta { grid-template-columns: minmax(0, 1fr); }
+  .l-showcase, .l-team-grid, .l-members, .l-cta { grid-template-columns: minmax(0, 1fr); }
   .l-cta { padding-right: var(--m); }
   .l-cta-text { padding-left: var(--m); }
   .l-stats { grid-template-columns: 1fr 1fr; row-gap: 8px; }
