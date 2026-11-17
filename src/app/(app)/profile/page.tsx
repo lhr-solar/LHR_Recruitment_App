@@ -24,7 +24,7 @@ export default async function ProfilePage() {
       <div className="narrow">
         <header className="page-head">
           <h1>Which team are you on?</h1>
-          <p>Your profile sits under your team in the resume book. Only an admin can change it after this.</p>
+          <p>Your profile sits under your team in the student directory. Only an admin can change it after this.</p>
         </header>
         <ChooseTeamForm />
       </div>
@@ -54,7 +54,7 @@ export default async function ProfilePage() {
         <p>
           {isNew
             ? "Recruiters at Longhorn Racing's partner companies browse these profiles for interns and new hires. Start with your resume."
-            : "This is what recruiters at partner companies see when they browse the resume book."}
+            : "This is what recruiters at partner companies see when they browse the student directory."}
         </p>
       </header>
 
@@ -116,7 +116,7 @@ function StatusNotice({ visible, missing }: { visible: boolean; missing: string[
   if (!visible) {
     return (
       <div className="notice notice-info">
-        <p>Your profile is hidden. Partners won&apos;t find you in the resume book.</p>
+        <p>Your profile is hidden. Partners won&apos;t find you in the student directory.</p>
       </div>
     );
   }

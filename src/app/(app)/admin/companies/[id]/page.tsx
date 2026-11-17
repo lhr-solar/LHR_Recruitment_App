@@ -112,7 +112,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ id: st
             )}
             <div className="invite-panel">
               <h3>Invite a recruiter</h3>
-              <p className="field-hint">They get an email, and their first sign-in with that address lands them in the resume book.</p>
+              <p className="field-hint">They get an email, and their first sign-in with that address lands them in the student directory.</p>
               <InviteForm companyId={company.id} />
               {pending.length > 0 && (
                 <ul className="invite-list" aria-label="Waiting for sign-in">

@@ -28,7 +28,7 @@ export default async function BookStudentPage({ params, searchParams }: Props) {
   return (
     <div className="pv-page">
       <Link href={`/partner/students${query ? `?${query}` : ""}`} className="link back-link">
-        Back to the resume book
+        Back to the student directory
       </Link>
       <PartnerProfileView profile={student} />
     </div>

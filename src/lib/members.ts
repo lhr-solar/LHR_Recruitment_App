@@ -13,5 +13,5 @@ export type StudentSummary = { major: string | null; grad_year: number | null; v
 export function profileState(student: StudentSummary) {
   if (!student) return "No profile yet";
   if (!student.resume_path || !student.major || !student.grad_year) return "Unfinished";
-  return student.visible ? "In the resume book" : "Hidden from Partners";
+  return student.visible ? "In the student directory" : "Hidden from Partners";
 }

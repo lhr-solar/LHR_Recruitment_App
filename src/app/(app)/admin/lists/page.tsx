@@ -26,7 +26,7 @@ export default async function ListsPage() {
     <div className="admin-stack">
       <header className="page-head">
         <h1>Lists</h1>
-        <p>The skills and subsystems students pick from on their profile, and Partners filter the resume book by. Hiding one keeps it on profiles that already have it.</p>
+        <p>The skills and subsystems students pick from on their profile, and Partners filter the student directory by. Hiding one keeps it on profiles that already have it.</p>
       </header>
 
       <section className="panel profile-section" aria-labelledby="subsystems-title">

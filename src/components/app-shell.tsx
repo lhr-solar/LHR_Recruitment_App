@@ -9,7 +9,7 @@ function navFor(viewer: Viewer): NavItem[] {
   if (viewer.status !== "active" || viewer.companyPaused) return [];
   if (viewer.accountType === "partner") {
     return [
-      { href: "/partner/students", label: "Resume book" },
+      { href: "/partner/students", label: "Student directory" },
       { href: "/partner/jobs", label: "Jobs" },
       { href: "/partner/company", label: "Company page" },
     ];

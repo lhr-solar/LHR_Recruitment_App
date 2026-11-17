@@ -17,7 +17,7 @@ import { GRAD_SEMESTERS, termKey } from "@/lib/student-options";
 import { TEAMS } from "@/lib/teams";
 import { FilterForm, SortSelect } from "./filter-form";
 
-export const metadata: Metadata = { title: "Resume book" };
+export const metadata: Metadata = { title: "Student directory" };
 
 const LOOKING_FOR: Record<string, string> = {
   internship: "Internship",
@@ -41,7 +41,7 @@ export default async function ResumeBookPage({ searchParams }: { searchParams: P
   return (
     <div>
       <header className="page-head">
-        <h1>Resume book</h1>
+        <h1>Student directory</h1>
         <p>
           {options.total === 0
             ? "Longhorn Racing students who choose to share their profile show up here."
@@ -83,7 +83,7 @@ export default async function ResumeBookPage({ searchParams }: { searchParams: P
 
           {results.error ? (
             <div className="notice notice-error" role="alert">
-              <p>We couldn&apos;t load the resume book. Refresh the page to try again.</p>
+              <p>We couldn&apos;t load the student directory. Refresh the page to try again.</p>
             </div>
           ) : results.cards.length === 0 ? (
             <div className="panel empty-block">

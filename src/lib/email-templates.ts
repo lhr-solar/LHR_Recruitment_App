@@ -143,7 +143,7 @@ export function joinApprovedEmail({ team, profileUrl }: { team: string; profileU
     blocks: [
       { p: `Your request to join the ${team} team on LHR Careers was approved.` },
       {
-        p: "Next, build your profile. Once it has your resume, major and graduation date, it appears in the resume book that Longhorn Racing's Partners use to find interns and new hires.",
+        p: "Next, build your profile. Once it has your resume, major and graduation date, it appears in the student directory that Longhorn Racing's Partners use to find interns and new hires.",
       },
       { button: { label: "Build your profile", href: profileUrl } },
       { note: "You decide whether Partners see your profile, and you can change that at any time." },
@@ -181,7 +181,7 @@ export function partnerWelcomeEmail({ company, email, invited, signInUrl }: { co
       { p: "LHR Careers is where our Partners meet the students who design, build and race Longhorn Racing's Solar, Electric and Combustion cars. With your access you can:" },
       {
         list: [
-          "Browse the resume book and filter by team, subsystem, major, graduation date and skills",
+          "Browse the student directory and filter by team, subsystem, major, graduation date and skills",
           "Post internships, co-ops and full-time roles to the job board",
           "See how many students viewed each post, and who applied",
         ],

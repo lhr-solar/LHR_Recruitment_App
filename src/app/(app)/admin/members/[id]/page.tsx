@@ -111,7 +111,7 @@ export default async function MemberPage({ params }: { params: Promise<{ id: str
             <p className="field-hint">
               {member.status === "suspended"
                 ? "They can't sign in to their profile, and Partners can't see them. Restoring brings everything back as it was."
-                : "Pausing locks them out of LHR Careers and takes them out of the resume book. Their profile is kept, so you can restore it later."}
+                : "Pausing locks them out of LHR Careers and takes them out of the student directory. Their profile is kept, so you can restore it later."}
             </p>
             <StatusForm userId={member.id} paused={member.status === "suspended"} />
           </section>

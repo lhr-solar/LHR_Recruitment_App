@@ -41,7 +41,7 @@ export default async function PartnerRequestsPage() {
     <div>
       <header className="page-head">
         <h1>Partner requests</h1>
-        <p>Recruiters asking for access to the resume book. Approving links them to a company and lets them in right away.</p>
+        <p>Recruiters asking for access to the student directory. Approving links them to a company and lets them in right away.</p>
       </header>
 
       <section className="panel table-panel" aria-labelledby="partner-requests-title">

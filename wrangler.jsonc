@@ -17,6 +17,9 @@
 	"images": {
 		"binding": "IMAGES"
 	},
+	// The test site. Wrangler creates the DNS record, as long as test.lhrsolar.org has no A or CNAME
+	// record of its own yet.
+	"routes": [{ "pattern": "test.lhrsolar.org", "custom_domain": true }],
 	"observability": {
 		"enabled": true
 	}

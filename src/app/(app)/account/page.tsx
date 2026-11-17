@@ -19,7 +19,7 @@ export default async function AccountPage() {
         ) : (
           <>
             <h1>Your company&apos;s access is paused</h1>
-            <p>Longhorn Racing has paused LHR Careers access for your company, so the resume book and your job posts are unavailable for now. Contact your Longhorn Racing corporate relations lead to restore it.</p>
+            <p>Longhorn Racing has paused LHR Careers access for your company, so the student directory and your job posts are unavailable for now. Contact your Longhorn Racing corporate relations lead to restore it.</p>
           </>
         )}
       </header>

@@ -3,6 +3,8 @@
 A careers site where Longhorn Racing members find internships and jobs, and the team's **Partners** find LHR students and post openings.
 
 > **Terminology:** we never say "sponsor" (UT Austin regulations). Companies are **Partners** everywhere: UI copy, emails, URLs, database tables and code.
+>
+> Partners browse the **Student directory**. Never call it a "resume book" in UI copy or emails (internal names such as the `resume_book` view stay).
 
 ## Stack
 

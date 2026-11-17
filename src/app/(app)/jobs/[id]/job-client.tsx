@@ -34,7 +34,7 @@ export function AppliedToggle({ jobId, applied, company }: { jobId: string; appl
       <h2 id="applied-title">Applied?</h2>
       <p className="field-hint">
         Once you&apos;ve applied on their site, mark it here. {company} sees your profile on their applicant list, even if
-        it&apos;s hidden from the resume book.
+        it&apos;s hidden from the student directory.
       </p>
       <button
         type="button"

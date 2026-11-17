@@ -81,7 +81,7 @@ export default async function PartnerJobPage({ params }: { params: Promise<{ id:
           </div>
           {applicants.length === 0 ? (
             <p className="table-message">
-              No one has marked &ldquo;I applied&rdquo; yet. When a student does, their profile shows up here, even if it&apos;s hidden from the resume book.
+              No one has marked &ldquo;I applied&rdquo; yet. When a student does, their profile shows up here, even if it&apos;s hidden from the student directory.
             </p>
           ) : (
             <table className="data-table">

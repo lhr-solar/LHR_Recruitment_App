@@ -8,7 +8,7 @@ export default function StudentNotFound() {
         <p>This student may have hidden their profile, or the link is out of date.</p>
       </header>
       <Link href="/partner/students" className="btn btn-secondary">
-        Back to the resume book
+        Back to the student directory
       </Link>
     </div>
   );
