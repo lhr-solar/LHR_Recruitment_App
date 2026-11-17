@@ -17,3 +17,18 @@ export const MAX_DESCRIPTION = 1000;
 export function logoUrl(path: string | null) {
   return path ? `${publicEnv.supabaseUrl}/storage/v1/object/public/partner-logos/${path.split("/").map(encodeURIComponent).join("/")}` : null;
 }
+
+// A company website as typed ("acme.com", "http://acme.com/careers"), made into an https URL.
+// Empty is null; anything that isn't a web address is undefined.
+export function normalizeWebsite(value: string): string | null | undefined {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  const withProtocol = /^https?:\/\//i.test(trimmed) ? trimmed.replace(/^http:/i, "https:") : `https://${trimmed}`;
+  try {
+    const url = new URL(withProtocol);
+    if (!url.hostname.includes(".") || url.toString().length > 300) return undefined;
+    return url.toString();
+  } catch {
+    return undefined;
+  }
+}

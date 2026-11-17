@@ -144,7 +144,7 @@ Brand-locked to the [LHR Brand Book](https://stormy-asparagus-6c0.notion.site/Br
 2. **Students:** onboarding, profile editor, resume and portfolio uploads
 3. **Partners:** company pages, resume book with filters, access log, Partner access approvals
 4. **Jobs:** posting, the job board, view and click tracking, "I applied"
-5. **Admin and team lead tools:** roster with CSV import, Partner invites, companies and tiers, moderation
+5. **Admin and team lead tools:** roster with CSV import, members (roles, teams, pausing), Partner invites, companies and tiers, job moderation, skill and subsystem lists, the account emails
 6. **Launch:** landing page, design review, Resend domain setup, Cloudflare deployment
 
 ## Setup the team owns

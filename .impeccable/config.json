@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "montserrat",
+        "createdAt": "2026-11-17T06:52:23.261Z",
+        "reason": "Brand book mandates Montserrat for titles (docs/PLAN.md, Design → Type)"
+      }
+    ]
+  }
+}

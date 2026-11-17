@@ -56,8 +56,8 @@ export async function loadStudentProfile(userId: string, team: string): Promise<
       )
       .eq("user_id", userId)
       .maybeSingle(),
-    supabase.from("subsystems").select("id, name").eq("team", team).eq("active", true).order("sort"),
-    supabase.from("skills").select("id, name, category").eq("active", true).order("category").order("name"),
+    supabase.from("subsystems").select("id, name, active").eq("team", team).order("sort"),
+    supabase.from("skills").select("id, name, category, active").order("category").order("name"),
     supabase.from("student_skills").select("skill_id").eq("student_id", userId),
     supabase
       .from("student_files")
@@ -67,6 +67,14 @@ export async function loadStudentProfile(userId: string, team: string): Promise<
   ]);
 
   const row = (student.data as StudentRow | null) ?? null;
+  const skillIds = ((chosen.data ?? []) as { skill_id: string }[]).map((s) => s.skill_id);
+  // Entries an admin has hidden stay available to the students who already picked them.
+  const subsystemList = ((subsystems.data ?? []) as (Subsystem & { active: boolean })[])
+    .filter((sub) => sub.active || sub.id === row?.subsystem_id)
+    .map(({ id, name }) => ({ id, name }));
+  const skillList = ((skills.data ?? []) as (Skill & { active: boolean })[])
+    .filter((skill) => skill.active || skillIds.includes(skill.id))
+    .map(({ id, name, category }) => ({ id, name, category }));
   const fileRows = (files.data ?? []) as PieceRow[];
 
   const sign = (bucket: string, path: string | null | undefined, download?: string) =>
@@ -80,9 +88,9 @@ export async function loadStudentProfile(userId: string, team: string): Promise<
 
   return {
     student: row ? { ...row, gpa: row.gpa === null ? null : Number(row.gpa) } : null,
-    subsystems: (subsystems.data ?? []) as Subsystem[],
-    skills: (skills.data ?? []) as Skill[],
-    skillIds: ((chosen.data ?? []) as { skill_id: string }[]).map((s) => s.skill_id),
+    subsystems: subsystemList,
+    skills: skillList,
+    skillIds,
     files: fileRows.flatMap((file, i) => {
       const piece = toPiece(file, signed[i]?.data?.signedUrl ?? null);
       return piece ? [piece] : [];

@@ -16,6 +16,9 @@ export type Viewer = {
   isAdmin: boolean;
   isTeamLead: boolean;
   team: string | null;
+  // A Partner recruiter whose company an admin has hidden: signed in, but locked out like a
+  // paused account.
+  companyPaused: boolean;
 };
 
 // One profile read per request, shared by every component that asks.
@@ -33,6 +36,12 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
     .single();
   if (!profile) return null;
 
+  let companyPaused = false;
+  if (profile.account_type === "partner" && profile.status === "active") {
+    const { data: access } = await supabase.rpc("is_active_partner");
+    companyPaused = access !== true;
+  }
+
   return {
     id: user.id,
     email: profile.email,
@@ -43,12 +52,13 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
     isAdmin: profile.is_admin,
     isTeamLead: profile.is_team_lead,
     team: profile.team,
+    companyPaused,
   };
 });
 
 // Where a signed-in person belongs, given what their account is.
 export function homeFor(viewer: Viewer): string {
-  if (viewer.status === "suspended") return "/account";
+  if (viewer.status === "suspended" || viewer.companyPaused) return "/account";
   if (viewer.accountType === "member") {
     return viewer.status === "active" ? "/profile" : "/join";
   }
@@ -72,7 +82,7 @@ export async function requireActiveMember(): Promise<Viewer> {
 
 export async function requireActivePartner(): Promise<Viewer> {
   const viewer = await requireViewer();
-  if (viewer.accountType !== "partner" || viewer.status !== "active") redirect(homeFor(viewer));
+  if (viewer.accountType !== "partner" || viewer.status !== "active" || viewer.companyPaused) redirect(homeFor(viewer));
   return viewer;
 }
 

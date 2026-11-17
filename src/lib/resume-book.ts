@@ -140,7 +140,9 @@ export async function searchResumeBook(filters: Filters, skills: SkillIndex): Pr
     .select(
       "user_id, full_name, email, avatar_url, team, subsystem_name, position, major, grad_year, grad_semester, career_interest, technical_focus, skill_ids, skill_names, has_photo",
       { count: "exact" },
-    );
+    )
+    // The view also returns students who applied to this Partner's jobs; the list is only the book.
+    .eq("listed", true);
 
   const q = literal(filters.q);
   if (q) {
@@ -221,7 +223,11 @@ export type FilterOptions = {
 
 export async function filterOptions(skills: SkillIndex): Promise<FilterOptions> {
   const supabase = await createClient();
-  const book = await supabase.from("resume_book").select("subsystem_name, major, grad_year, grad_semester, skill_ids").limit(5000);
+  const book = await supabase
+    .from("resume_book")
+    .select("subsystem_name, major, grad_year, grad_semester, skill_ids")
+    .eq("listed", true)
+    .limit(5000);
   const rows = (book.data ?? []) as {
     subsystem_name: string | null;
     major: string | null;
@@ -262,6 +268,7 @@ export async function filterOptions(skills: SkillIndex): Promise<FilterOptions> 
 // ── One student ──────────────────────────────────────────────────────────
 
 type FullRow = BookRow & {
+  has_resume: boolean;
   gpa: number | null;
   citizenship: Citizenship | null;
   project_experience: string | null;
@@ -270,8 +277,8 @@ type FullRow = BookRow & {
   portfolio_url: string | null;
 };
 
-// A student as the Partner sees them, or null when they aren't in the book (hidden, unfinished,
-// or not a student at all). Resume and file links point at the logging routes below. Cached per
+// A student as the Partner sees them, or null when the Partner can't see them: not in the book
+// (hidden, unfinished, or not a student at all) and not an applicant to one of their jobs. Resume and file links point at the logging routes below. Cached per
 // request, since the page title reads it too.
 export const loadBookStudent = cache(async (studentId: string): Promise<PartnerView | null> => {
   if (!UUID.test(studentId)) return null;
@@ -279,7 +286,7 @@ export const loadBookStudent = cache(async (studentId: string): Promise<PartnerV
   const { data } = await supabase
     .from("resume_book")
     .select(
-      "user_id, full_name, email, avatar_url, team, subsystem_name, position, major, grad_year, grad_semester, gpa, career_interest, citizenship, technical_focus, project_experience, linkedin_url, github_url, portfolio_url, skill_names, has_photo",
+      "user_id, full_name, email, avatar_url, team, subsystem_name, position, major, grad_year, grad_semester, gpa, career_interest, citizenship, technical_focus, project_experience, linkedin_url, github_url, portfolio_url, skill_names, has_photo, has_resume",
     )
     .eq("user_id", studentId)
     .maybeSingle();
@@ -325,7 +332,8 @@ export const loadBookStudent = cache(async (studentId: string): Promise<PartnerV
     projectExperience: row.project_experience,
     links: { linkedin: row.linkedin_url, github: row.github_url, site: row.portfolio_url },
     skills: row.skill_names,
-    resume: { viewUrl: `${base}/resume`, downloadUrl: `${base}/resume?download=1` },
+    // An applicant may not have uploaded a resume yet.
+    resume: row.has_resume ? { viewUrl: `${base}/resume`, downloadUrl: `${base}/resume?download=1` } : null,
     files: pieces,
   };
 });

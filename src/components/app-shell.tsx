@@ -6,10 +6,11 @@ import { NavLink } from "@/components/nav-link";
 type NavItem = { href: string; label: string };
 
 function navFor(viewer: Viewer): NavItem[] {
-  if (viewer.status !== "active") return [];
+  if (viewer.status !== "active" || viewer.companyPaused) return [];
   if (viewer.accountType === "partner") {
     return [
       { href: "/partner/students", label: "Resume book" },
+      { href: "/partner/jobs", label: "Jobs" },
       { href: "/partner/company", label: "Company page" },
     ];
   }

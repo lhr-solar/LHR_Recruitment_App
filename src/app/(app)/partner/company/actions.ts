@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireActivePartner } from "@/lib/auth";
 import { companyFor } from "@/lib/partner";
-import { LOGO_TYPES, MAX_DESCRIPTION, MAX_LOGO_BYTES } from "@/lib/partner-options";
+import { LOGO_TYPES, MAX_DESCRIPTION, MAX_LOGO_BYTES, normalizeWebsite } from "@/lib/partner-options";
 import { createClient } from "@/lib/supabase/server";
 
 // ── Website and description ──────────────────────────────────────────────
@@ -17,20 +17,14 @@ export type CompanyState =
 const companySchema = z.object({
   website: z
     .string()
-    .trim()
     .transform((value, ctx) => {
-      if (!value) return null;
-      const withProtocol = /^https?:\/\//i.test(value) ? value.replace(/^http:/i, "https:") : `https://${value}`;
-      try {
-        const url = new URL(withProtocol);
-        if (!url.hostname.includes(".")) throw new Error("no domain");
-        return url.toString();
-      } catch {
+      const website = normalizeWebsite(value);
+      if (website === undefined) {
         ctx.addIssue({ code: "custom", message: "Enter your company's website, like acme.com." });
         return z.NEVER;
       }
-    })
-    .refine((value) => value === null || value.length <= 300, "That address is too long."),
+      return website;
+    }),
   description: z
     .string()
     .trim()

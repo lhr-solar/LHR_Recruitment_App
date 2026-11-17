@@ -81,7 +81,11 @@ Supabase → **Project Settings → API Keys**. Put these in `.env.local` (to ru
 | `NEXT_PUBLIC_SUPABASE_URL` | Project URL |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key (`sb_publishable_…`), or the legacy anon key |
 | `SUPABASE_SECRET_KEY` | Secret key (`sb_secret_…`). Server only; never commit it |
-| `NEXT_PUBLIC_SITE_URL` | The production domain |
+| `NEXT_PUBLIC_SITE_URL` | The production domain (links in emails point here) |
+| `RESEND_API_KEY` | Resend → **API Keys**. Server only |
+| `EMAIL_FROM` | The sender, e.g. `LHR Careers <careers@longhornracing.org>` (a verified Resend domain; see step 5) |
+| `EMAIL_REPLY_TO` | Optional. Where replies go, e.g. a team inbox |
+| `RESEND_WEBHOOK_SECRET` | Resend → **Webhooks** → signing secret (`whsec_…`). Server only; see step 5 |
 
 ### 3. Google sign-in
 
@@ -112,11 +116,30 @@ Supabase → **Authentication → Emails**: paste this into both **Magic Link** 
 
 Before launch, set **Authentication → Emails → SMTP Settings** to Resend (`smtp.resend.com`, port 465, user `resend`, password = Resend API key) so sign-in emails aren't rate-limited.
 
-### 5. Cloudflare
+### 5. Resend (email)
+
+The app emails join decisions, Partner approvals and invites, and new "I applied" marks. Until a domain is verified, Resend only delivers to the address the Resend account was made with.
+
+1. Resend → **Domains → Add domain** → `longhornracing.org` (or a subdomain such as `mail.longhornracing.org`).
+2. Add the DNS records Resend shows (an MX and TXT for the return path, a DKIM TXT) wherever the domain's DNS lives, then press **Verify**.
+3. Set `EMAIL_FROM` to an address on that domain, and use the same domain for Supabase's SMTP settings (step 4).
+4. On the domain's page, turn on **Open tracking** and **Click tracking**.
+5. Once the site is deployed: Resend → **Webhooks → Add endpoint** → `https://<site>/api/resend/webhook`, with the `email.*` events (sent, delivered, delivery delayed, bounced, complained, opened, clicked, failed, suppressed). Put its signing secret in `RESEND_WEBHOOK_SECRET`.
+
+Every email is logged, and the webhook fills in delivery, opens, clicks and bounces. Admins see it under **Admin → Email**.
+
+To check how the emails look, send yourself one of each with sample data: `node --env-file=.env.local scripts/send-email-previews.mjs you@utexas.edu`.
+
+Emails are never sent while the app points at local Supabase, even if `.env.local` holds a real key.
+
+### 6. Cloudflare
 
 ```bash
 npx wrangler login
 npx wrangler secret put SUPABASE_SECRET_KEY
+npx wrangler secret put RESEND_API_KEY
+npx wrangler secret put EMAIL_FROM
+npx wrangler secret put RESEND_WEBHOOK_SECRET
 npm run deploy
 ```
 
@@ -131,6 +154,23 @@ npm run deploy
 
 Admin-allowlisted emails become admins whichever door they use. The database function `claim_account` makes these decisions; the access rules on every table enforce them.
 
+## Admin and team lead tools
+
+Under **Admin** in the top bar. Team leads see the first three tabs, limited to their own team.
+
+| Tab | For |
+|---|---|
+| Join requests | Approve or decline `@utexas.edu` students asking to join; they get an email either way |
+| Roster | Pre-approve emails (paste a list, or a CSV with email and team columns). Adding someone already waiting lets them in |
+| Members | Find anyone; admins change teams and make team leads or admins; admins and leads pause and restore access |
+| Companies | Add Partners, invite recruiters by email, pause a recruiter, hide a company (locks its recruiters out and closes its posts), set tiers |
+| Partner requests | Approve recruiters who asked for access, linking them to a company |
+| Jobs | Every post; close, reopen or delete one |
+| Lists | The skills and subsystems students pick from; hide old ones, add new ones each year |
+| Resume access | Every time a Partner opened or downloaded a resume or file |
+
+Tiers only order the Partner logos on the public landing page (`/`).
+
 ## Repository map
 
 ```
@@ -142,8 +182,12 @@ src/proxy.ts           refreshes the Supabase session; sends signed-out visitors
 src/lib/               auth (viewer + routing), Supabase clients, sign-in, teams, photos
 src/app/login          two-door sign-in
 src/app/auth/*         OAuth callback, email-link confirm, sign out
-src/app/(app)/*        signed-in screens: join, pending, profile, jobs, partner (resume book, company page), admin (join requests, resume access)
+src/app/page.tsx       public landing page (signed-in people go to their home screen)
+src/app/(app)/*        signed-in screens: join, pending, profile, jobs (board, "I applied"), partner (resume book, jobs, company page), admin (see above)
 src/lib/resume-book.ts the resume book: filters, and the logged routes Partners open resumes and files through
+src/lib/jobs.ts        job posts: the student board, a company's posts with view, click and "I applied" counts
+src/lib/email.ts       Resend email (never sends while the app points at local Supabase); notify.ts holds the account emails
+src/lib/roster.ts      reads pasted emails and roster CSVs
 src/app/partners/request  public Partner access request
 src/styles/tokens.css  brand tokens (LHR Brand Book)
 public/brand/          official LHR logos and the CAREERS lockup
