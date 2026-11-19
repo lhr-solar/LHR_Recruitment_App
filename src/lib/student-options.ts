@@ -70,8 +70,12 @@ export function isBlockedFile(name: string) {
 // ── 3D models ────────────────────────────────────────────────────────────
 // STEP and STL only: every CAD tool exports them, and Partners can preview them in the browser.
 // The student's browser turns each one into a small mesh at upload, so recruiters never convert CAD.
-export const MAX_MODEL_BYTES = 50 * 1024 * 1024;
+// A model too detailed for that still uploads; Partners download it instead of viewing it.
+export const MAX_MODEL_BYTES = 250 * 1024 * 1024;
 export const MAX_MODEL_PREVIEW_BYTES = 30 * 1024 * 1024;
+// OpenCascade has 2 GB in the browser and needs roughly 25 times a STEP file's size; 96 MB and
+// 114 MB KiCad boards both ran out. Bigger STEP files skip the attempt rather than spend 90 seconds.
+export const MAX_STEP_PREVIEW_BYTES = 80 * 1024 * 1024;
 export const MODEL_PREVIEW_NAME = "preview.mesh.gz";
 
 export type ModelFormat = "step" | "stl";

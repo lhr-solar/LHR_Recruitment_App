@@ -312,8 +312,9 @@ export async function addPortfolioFile(path: string, fileName: string, previewPa
     return { error: "Export your model as STEP or STL. Partners can't open other CAD formats." };
   }
 
+  // Only a model has a preview, and a model too detailed to preview comes without one.
   const format = modelFormat(path);
-  if (format !== modelFormat(name) || (format !== null) !== (previewPath !== undefined)) {
+  if (format !== modelFormat(name) || (format === null && previewPath !== undefined)) {
     await discard();
     return { error: "That upload didn't go through. Try again." };
   }
