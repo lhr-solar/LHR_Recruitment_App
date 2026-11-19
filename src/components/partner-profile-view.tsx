@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Avatar } from "@/components/avatar";
+import { ModelPreviewButton } from "@/components/model-preview-button";
 import type { PartnerView } from "@/lib/student";
 import { CAREER_INTEREST, CITIZENSHIP, GRAD_SEMESTERS, formatBytes, formatDuration } from "@/lib/student-options";
 import { TEAMS } from "@/lib/teams";
@@ -165,6 +166,9 @@ export function PartnerProfileView({ profile, preview = false }: { profile: Part
                       <span className="cell-secondary num">
                         {piece.kind === "video" ? (piece.seconds ? formatDuration(piece.seconds) : "Video") : formatBytes(piece.sizeBytes)}
                       </span>
+                    )}
+                    {piece.kind === "file" && piece.previewUrl && (
+                      <ModelPreviewButton url={piece.previewUrl} fileName={piece.fileName} downloadUrl={piece.url} />
                     )}
                   </li>
                 ))}

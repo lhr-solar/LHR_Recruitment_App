@@ -296,14 +296,16 @@ export const loadBookStudent = cache(async (studentId: string): Promise<PartnerV
   const [photos, files] = await Promise.all([
     row.has_photo ? signPhotos([row.user_id]) : Promise.resolve(new Map<string, string>()),
     // Partners may read the file list (not the files) for students in the book.
-    supabase.from("student_files").select("id, kind, path, url, file_name, size_bytes, video_seconds").eq("student_id", studentId).order("created_at"),
+    supabase.from("student_files").select("id, kind, path, url, file_name, size_bytes, video_seconds, preview_path").eq("student_id", studentId).order("created_at"),
   ]);
 
   const base = `/partner/students/${studentId}`;
   const pieces: PortfolioPiece[] = [];
   for (const file of (files.data ?? []) as FileRow[]) {
     if (file.kind === "file") {
-      pieces.push({ id: file.id, fileName: file.file_name, kind: "file", sizeBytes: file.size_bytes ?? 0, url: `${base}/files/${file.id}` });
+      const url = `${base}/files/${file.id}`;
+      const previewUrl = file.preview_path ? `${url}?view=3d` : null;
+      pieces.push({ id: file.id, fileName: file.file_name, kind: "file", sizeBytes: file.size_bytes ?? 0, url, previewUrl });
     } else if (file.kind === "video" && file.path) {
       // Videos play in the page; they're signed here rather than logged as downloads.
       const { data: signed } = await createAdminClient().storage.from("videos").createSignedUrl(file.path, 60 * 60);
@@ -346,6 +348,7 @@ type FileRow = {
   file_name: string;
   size_bytes: number | null;
   video_seconds: number | null;
+  preview_path: string | null;
 };
 
 async function signPhotos(studentIds: string[]): Promise<Map<string, string>> {
@@ -364,7 +367,7 @@ async function signPhotos(studentIds: string[]): Promise<Map<string, string>> {
 
 // ── Opening a resume or file: check, log, sign ───────────────────────────
 
-export type AccessKind = "resume_view" | "resume_download" | "portfolio_download";
+export type AccessKind = "resume_view" | "resume_download" | "portfolio_view" | "portfolio_download";
 
 // A signed URL for a Partner, or null when the student isn't in the book or the file is gone.
 // The caller has already checked that the viewer is an active Partner.
@@ -386,17 +389,18 @@ export async function openStudentFile(
   let path: string | null;
   let downloadName: string | undefined;
 
-  if (kind === "portfolio_download") {
+  if (kind === "portfolio_download" || kind === "portfolio_view") {
     const { data: file } = await admin
       .from("student_files")
-      .select("path, file_name, kind")
+      .select("path, preview_path, file_name, kind")
       .eq("id", fileId ?? "")
       .eq("student_id", studentId)
       .maybeSingle();
     if (!file || file.kind !== "file") return null;
     bucket = "portfolio";
-    path = file.path;
-    downloadName = file.file_name;
+    // Viewing a model in 3D fetches its preview mesh, not the CAD file.
+    path = kind === "portfolio_view" ? file.preview_path : file.path;
+    if (kind === "portfolio_download") downloadName = file.file_name;
   } else {
     const { data: student } = await admin.from("students").select("resume_path").eq("user_id", studentId).maybeSingle();
     bucket = "resumes";

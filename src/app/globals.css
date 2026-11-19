@@ -639,6 +639,55 @@ html:has(.save-bar) { scroll-padding-bottom: calc(var(--control-height) + 2 * va
 .pv-files li { display: grid; gap: var(--space-3xs); }
 .pv-files li + li { padding-top: var(--space-xs); border-top: 1px solid var(--color-rule); }
 .pv-files .pv-video { margin-bottom: var(--space-2xs); }
+.pv-files .btn { justify-self: start; min-height: 34px; margin-top: var(--space-2xs); }
+
+/* A 3D model from a portfolio, opened in a dialog */
+.model-dialog {
+  width: min(1100px, calc(100vw - 2 * var(--space-md)));
+  max-width: none;
+  max-height: calc(100dvh - 2 * var(--space-md));
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-card);
+  background: var(--color-paper-2);
+  color: var(--color-ink);
+}
+.model-dialog::backdrop { background: rgb(14 42 56 / 0.6); }
+.model-dialog-body { display: grid; gap: var(--space-sm); padding: var(--space-md); }
+.model-dialog-head { display: flex; align-items: center; gap: var(--space-md); }
+.model-dialog-head h2 { flex: 1; min-width: 0; font-size: var(--text-lg); }
+.model-dialog-head .btn { min-height: 34px; }
+.model-viewer { position: relative; display: grid; gap: var(--space-sm); }
+.model-canvas {
+  height: min(70dvh, 720px);
+  min-height: 280px;
+  overflow: hidden;
+  border-radius: var(--radius-control);
+  background: radial-gradient(circle at 50% 40%, var(--color-paper-2), var(--color-paper) 75%);
+  touch-action: none;
+}
+.model-canvas canvas { display: block; cursor: grab; }
+.model-canvas canvas:active { cursor: grabbing; }
+.model-status {
+  position: absolute;
+  inset: 0 0 auto;
+  height: min(70dvh, 720px);
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-lg);
+  color: var(--color-muted);
+  text-align: center;
+}
+.model-toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); }
+.model-toolbar .btn { min-height: 34px; flex: none; }
+@media (max-width: 40rem) {
+  .model-dialog-head { flex-wrap: wrap; }
+  .model-dialog-head h2 { flex-basis: 100%; }
+  .model-toolbar { flex-direction: column; align-items: flex-start; }
+}
 
 @media (max-width: 60rem) {
   .pv-grid { grid-template-columns: minmax(0, 1fr); }

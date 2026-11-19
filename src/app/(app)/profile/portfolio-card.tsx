@@ -4,24 +4,34 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { PortfolioPiece } from "@/lib/student";
+import { makeModelPreview } from "@/lib/model-preview";
 import {
   MAX_FILE_BYTES,
+  MAX_MODEL_BYTES,
+  MAX_MODEL_PREVIEW_BYTES,
   MAX_PORTFOLIO_FILES,
   MAX_VIDEO_BYTES,
   MAX_VIDEO_SECONDS,
+  MODEL_PREVIEW_NAME,
   VIDEO_TYPES,
+  type ModelFormat,
   formatBytes,
   formatDuration,
   isBlockedFile,
+  isOtherModelFile,
+  modelFormat,
   storageSafeName,
   videoLink,
 } from "@/lib/student-options";
 import { uploadWithProgress } from "@/lib/upload";
 import { addPortfolioFile, addPortfolioVideo, addPortfolioVideoLink, removePortfolioFile } from "./actions";
 import { FileDrop } from "@/components/file-drop";
+import { ModelPreviewButton } from "@/components/model-preview-button";
 import { PdfIcon } from "./resume-card";
 
 const TOO_BIG_FOR_UPLOAD = "Upload it to YouTube as Unlisted and paste the link below instead.";
+const TOO_DETAILED =
+  "That model is too detailed to preview in a browser. Export just the part or subassembly you want to show, or for a board, leave out the small components.";
 
 // Reads the video's length, and whether this browser can play it at all (a fair sign recruiters can).
 function readVideo(file: File): Promise<{ seconds: number } | null> {
@@ -50,6 +60,7 @@ export function PortfolioCard({ userId, pieces }: { userId: string; pieces: Port
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState<number | null>(null);
+  const [preparing, setPreparing] = useState(false);
   const [removingId, setRemovingId] = useState<string | null>(null);
   const [, startRemoving] = useTransition();
   const [linking, startLinking] = useTransition();
@@ -67,6 +78,11 @@ export function PortfolioCard({ userId, pieces }: { userId: string; pieces: Port
     setError(null);
     const type = videoType(file);
     if (type || file.type.startsWith("video/")) return uploadVideo(file, type);
+    const format = modelFormat(file.name);
+    if (format) return uploadModel(file, format);
+    if (isOtherModelFile(file.name)) {
+      return setError("Export your model as STEP or STL first. Partners can't open other CAD formats in the browser.");
+    }
 
     if (isBlockedFile(file.name)) {
       return setError("That kind of file can't be shared. Use a PDF, document, slides, spreadsheet, image, archive or video.");
@@ -82,6 +98,43 @@ export function PortfolioCard({ userId, pieces }: { userId: string; pieces: Port
       ? { error: "The upload didn't finish. Check your connection and try again." }
       : await addPortfolioFile(path, file.name);
     setUploading(false);
+    done(result);
+  }
+
+  // The browser makes the 3D preview first, so a model that can't be previewed never uploads.
+  async function uploadModel(file: File, format: ModelFormat) {
+    if (file.size > MAX_MODEL_BYTES) return setError(`That model is over 50 MB. ${TOO_DETAILED}`);
+
+    setUploading(true);
+    setPreparing(true);
+    const made = await makeModelPreview(file, format);
+    setPreparing(false);
+    if ("error" in made || made.preview.byteLength > MAX_MODEL_PREVIEW_BYTES) {
+      setUploading(false);
+      const unreadable = "error" in made && made.error === "unreadable";
+      return setError(unreadable ? `We couldn't read that ${format === "step" ? "STEP" : "STL"} file. Export it again and retry.` : TOO_DETAILED);
+    }
+
+    const folder = `${userId}/${crypto.randomUUID()}`;
+    const path = `${folder}/${storageSafeName(file.name)}`;
+    const previewPath = `${folder}/${MODEL_PREVIEW_NAME}`;
+    const storage = createClient().storage.from("portfolio");
+    const { error: previewError } = await storage.upload(previewPath, made.preview, { contentType: "application/octet-stream", upsert: false });
+    setProgress(0);
+    const { error: uploadError } = previewError
+      ? { error: "failed" }
+      : await uploadWithProgress("portfolio", path, file, format === "step" ? "model/step" : "model/stl", setProgress);
+    let result: { error: string | null };
+    if (previewError || uploadError) {
+      await storage.remove([previewPath]);
+      result = {
+        error: uploadError === "too_large" ? `That model is bigger than the server accepts. ${TOO_DETAILED}` : "The upload didn't finish. Check your connection and try again.",
+      };
+    } else {
+      result = await addPortfolioFile(path, file.name, previewPath);
+    }
+    setUploading(false);
+    setProgress(null);
     done(result);
   }
 
@@ -136,20 +189,21 @@ export function PortfolioCard({ userId, pieces }: { userId: string; pieces: Port
         </p>
       </div>
       <p className="section-lede">
-        Design reports, drawings, slide decks or test results, and if you like one short video of something you built. Partners
-        see these beside your resume.
+        Design reports, drawings, slide decks, test results or a 3D model, and if you like one short video of something you
+        built. Partners see these beside your resume, and can turn your models around in the browser.
       </p>
 
       {pieces.length > 0 && (
         <ul className="file-list">
           {pieces.map((piece) => (
             <li key={piece.id} className="file-row">
-              {piece.kind === "file" ? <PdfIcon /> : <VideoIcon />}
+              {piece.kind !== "file" ? <VideoIcon /> : piece.previewUrl ? <ModelIcon /> : <PdfIcon />}
               <div className="file-row-text">
                 <span className="cell-primary file-name">{piece.fileName}</span>
                 <span className="cell-secondary num">{describe(piece)}</span>
               </div>
               <div className="row-actions">
+                {piece.kind === "file" && piece.previewUrl && <ModelPreviewButton url={piece.previewUrl} fileName={piece.fileName} />}
                 {piece.url && (
                   <a
                     className="btn btn-secondary"
@@ -181,16 +235,18 @@ export function PortfolioCard({ userId, pieces }: { userId: string; pieces: Port
         <>
           <FileDrop
             label="Add a file"
-            busyLabel={progress === null ? "Uploading" : `Uploading ${Math.round(progress * 100)}%`}
+            busyLabel={preparing ? "Preparing 3D preview" : progress === null ? "Uploading" : `Uploading ${Math.round(progress * 100)}%`}
             busy={uploading}
             hint={
-              hasVideo
-                ? "Any document, image or archive up to 10 MB. You can also drop it here."
-                : "Any document, image or archive up to 10 MB, or a video up to 3 minutes. You can also drop it here."
+              preparing
+                ? "Building the 3D view Partners will see. Large models can take a minute; keep this tab open."
+                : hasVideo
+                  ? "Any document, image or archive up to 10 MB, or a STEP or STL model up to 50 MB. You can also drop it here."
+                  : "Any document, image or archive up to 10 MB, a STEP or STL model up to 50 MB, or a video up to 3 minutes. You can also drop it here."
             }
             onFile={upload}
           />
-          {progress !== null && <progress className="upload-progress" max={1} value={progress} aria-label="Video upload progress" />}
+          {progress !== null && <progress className="upload-progress" max={1} value={progress} aria-label="Upload progress" />}
           {!hasVideo && (
             <form action={saveLink} className="video-link-form">
               <label className="field-label" htmlFor="video_url">
@@ -223,6 +279,15 @@ function describe(piece: PortfolioPiece) {
   if (piece.kind === "video_link") return piece.url.replace(/^https:\/\/(www\.)?/, "");
   if (piece.kind === "video") return piece.seconds ? `Video, ${formatDuration(piece.seconds)}` : "Video";
   return formatBytes(piece.sizeBytes);
+}
+
+function ModelIcon() {
+  return (
+    <svg className="file-icon" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M16 4 27 10v12l-11 6-11-6V10Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M5 10l11 6 11-6M16 16v12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    </svg>
+  );
 }
 
 export function VideoIcon() {

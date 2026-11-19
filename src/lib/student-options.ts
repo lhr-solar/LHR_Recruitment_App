@@ -67,6 +67,35 @@ export function isBlockedFile(name: string) {
   return BLOCKED_EXTENSIONS.has(extension);
 }
 
+// ── 3D models ────────────────────────────────────────────────────────────
+// STEP and STL only: every CAD tool exports them, and Partners can preview them in the browser.
+// The student's browser turns each one into a small mesh at upload, so recruiters never convert CAD.
+export const MAX_MODEL_BYTES = 50 * 1024 * 1024;
+export const MAX_MODEL_PREVIEW_BYTES = 30 * 1024 * 1024;
+export const MODEL_PREVIEW_NAME = "preview.mesh.gz";
+
+export type ModelFormat = "step" | "stl";
+
+export function modelFormat(name: string): ModelFormat | null {
+  const extension = name.split(".").pop()?.toLowerCase() ?? "";
+  if (extension === "step" || extension === "stp") return "step";
+  return extension === "stl" ? "stl" : null;
+}
+
+// Native CAD and other 3D formats Partners can't open; students export STEP or STL instead.
+const OTHER_MODEL_EXTENSIONS = new Set([
+  "sldprt", "sldasm", "slddrw", "f3d", "f3z", "ipt", "iam", "catpart", "catproduct", "prt", "asm",
+  "par", "psm", "x_t", "x_b", "sat", "3dm", "igs", "iges", "obj", "3mf", "fbx", "glb", "gltf",
+  "kicad_pcb", "wrl", "brep", "fcstd", "blend", "skp",
+]);
+
+export function isOtherModelFile(name: string) {
+  const lower = name.toLowerCase();
+  // Creo numbers its saves: part.prt.3
+  if (/\.(prt|asm)\.\d+$/.test(lower)) return true;
+  return OTHER_MODEL_EXTENSIONS.has(lower.split(".").pop() ?? "");
+}
+
 // Storage keys allow a narrow character set; the original name is kept in the database.
 export function storageSafeName(name: string) {
   const cleaned = name.normalize("NFKD").replace(/[^\w.-]+/g, "-").replace(/-+/g, "-").replace(/^[-.]+/, "");

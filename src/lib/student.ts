@@ -27,7 +27,8 @@ export type Skill = { id: string; name: string; category: string };
 export type Subsystem = { id: string; name: string };
 // A portfolio piece: a file to download, a short uploaded video, or a link to a video hosted elsewhere.
 export type PortfolioPiece = { id: string; fileName: string } & (
-  | { kind: "file"; sizeBytes: number; url: string | null }
+  // previewUrl: the 3D mesh of a STEP or STL model.
+  | { kind: "file"; sizeBytes: number; url: string | null; previewUrl: string | null }
   | { kind: "video"; sizeBytes: number; seconds: number | null; url: string | null }
   | ({ kind: "video_link"; url: string } & VideoLink)
 );
@@ -61,7 +62,7 @@ export async function loadStudentProfile(userId: string, team: string): Promise<
     supabase.from("student_skills").select("skill_id").eq("student_id", userId),
     supabase
       .from("student_files")
-      .select("id, kind, path, url, file_name, size_bytes, video_seconds")
+      .select("id, kind, path, url, file_name, size_bytes, video_seconds, preview_path")
       .eq("student_id", userId)
       .order("created_at"),
   ]);
@@ -79,9 +80,10 @@ export async function loadStudentProfile(userId: string, team: string): Promise<
 
   const sign = (bucket: string, path: string | null | undefined, download?: string) =>
     path ? supabase.storage.from(bucket).createSignedUrl(path, SIGNED_URL_SECONDS, download ? { download } : undefined) : Promise.resolve(null);
-  const [resume, photo, ...signed] = await Promise.all([
+  const [resume, photo, previews, ...signed] = await Promise.all([
     sign("resumes", row?.resume_path),
     sign("photos", row?.photo_path),
+    Promise.all(fileRows.map((file) => sign("portfolio", file.preview_path))),
     // Files download under their own name; videos play in the page.
     ...fileRows.map((file) => (file.kind === "video" ? sign("videos", file.path) : sign("portfolio", file.path, file.file_name))),
   ]);
@@ -92,7 +94,7 @@ export async function loadStudentProfile(userId: string, team: string): Promise<
     skills: skillList,
     skillIds,
     files: fileRows.flatMap((file, i) => {
-      const piece = toPiece(file, signed[i]?.data?.signedUrl ?? null);
+      const piece = toPiece(file, signed[i]?.data?.signedUrl ?? null, previews[i]?.data?.signedUrl ?? null);
       return piece ? [piece] : [];
     }),
     resumeUrl: resume?.data?.signedUrl ?? null,
@@ -108,16 +110,17 @@ type PieceRow = {
   file_name: string;
   size_bytes: number | null;
   video_seconds: number | null;
+  preview_path: string | null;
 };
 
-function toPiece(row: PieceRow, signedUrl: string | null): PortfolioPiece | null {
+function toPiece(row: PieceRow, signedUrl: string | null, previewUrl: string | null): PortfolioPiece | null {
   const base = { id: row.id, fileName: row.file_name };
   if (row.kind === "video") return { ...base, kind: "video", sizeBytes: row.size_bytes ?? 0, seconds: row.video_seconds, url: signedUrl };
   if (row.kind === "video_link") {
     const link = row.url ? videoLink(row.url) : null;
     return link && row.url ? { ...base, kind: "video_link", url: row.url, ...link } : null;
   }
-  return { ...base, kind: "file", sizeBytes: row.size_bytes ?? 0, url: signedUrl };
+  return { ...base, kind: "file", sizeBytes: row.size_bytes ?? 0, url: signedUrl, previewUrl };
 }
 
 export type Readiness = {

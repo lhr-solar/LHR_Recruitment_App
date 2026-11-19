@@ -14,6 +14,7 @@ const when = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", 
 const KIND: Record<string, string> = {
   resume_view: "Viewed resume",
   resume_download: "Downloaded resume",
+  portfolio_view: "Viewed 3D model",
   portfolio_download: "Downloaded portfolio file",
 };
 

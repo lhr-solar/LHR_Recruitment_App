@@ -9,14 +9,20 @@ import {
   CITIZENSHIP,
   GRAD_SEMESTERS,
   MAX_FILE_BYTES,
+  MAX_MODEL_BYTES,
+  MAX_MODEL_PREVIEW_BYTES,
   MAX_PORTFOLIO_FILES,
   MAX_PHOTO_BYTES,
   MAX_SKILLS,
   MAX_VIDEO_BYTES,
   MAX_VIDEO_SECONDS,
   MAX_WORDS,
+  MODEL_PREVIEW_NAME,
+  type ModelFormat,
   countWords,
   isBlockedFile,
+  isOtherModelFile,
+  modelFormat,
   videoLink,
 } from "@/lib/student-options";
 import { isTeamSlug } from "@/lib/teams";
@@ -216,13 +222,27 @@ async function findObject(bucket: string, path: string): Promise<StoredObject | 
   return ((data ?? []) as StoredObject[]).find((o) => o.name === path.slice(slash + 1)) ?? null;
 }
 
-async function startsLikeAPdf(path: string) {
+// The first bytes of an upload, without downloading the rest.
+async function readHead(bucket: string, path: string, length: number) {
   const supabase = await createClient();
-  const { data } = await supabase.storage.from("resumes").createSignedUrl(path, 60);
-  if (!data) return false;
-  const response = await fetch(data.signedUrl, { headers: { Range: "bytes=0-4" } });
-  const head = new Uint8Array(await response.arrayBuffer()).slice(0, 5);
-  return new TextDecoder().decode(head) === "%PDF-";
+  const { data } = await supabase.storage.from(bucket).createSignedUrl(path, 60);
+  if (!data) return new Uint8Array();
+  const response = await fetch(data.signedUrl, { headers: { Range: `bytes=0-${length - 1}` } });
+  return new Uint8Array(await response.arrayBuffer()).slice(0, length);
+}
+
+async function startsLikeAPdf(path: string) {
+  return new TextDecoder().decode(await readHead("resumes", path, 5)) === "%PDF-";
+}
+
+// STEP files open with their ISO header; binary STL is exactly 84 + 50 bytes a triangle, and ASCII
+// STL starts with "solid".
+async function looksLikeModel(path: string, format: ModelFormat, size: number) {
+  const head = await readHead("portfolio", path, 96);
+  const text = new TextDecoder().decode(head).trimStart();
+  if (format === "step") return text.startsWith("ISO-10303-21");
+  if (head.length >= 84 && 84 + new DataView(head.buffer).getUint32(80, true) * 50 === size) return true;
+  return text.startsWith("solid");
 }
 
 export async function saveResume(path: string): Promise<FileResult> {
@@ -274,10 +294,12 @@ export async function removeResume(): Promise<FileResult> {
   return { error: null };
 }
 
-export async function addPortfolioFile(path: string, fileName: string): Promise<FileResult> {
+export async function addPortfolioFile(path: string, fileName: string, previewPath?: string): Promise<FileResult> {
   const viewer = await requireActiveMember();
   const supabase = await createClient();
-  const discard = () => supabase.storage.from("portfolio").remove([path]);
+  // A model's preview sits beside it, in the same upload folder; nothing else is ever removed here.
+  const expectedPreview = `${path.slice(0, path.lastIndexOf("/"))}/${MODEL_PREVIEW_NAME}`;
+  const discard = () => supabase.storage.from("portfolio").remove(previewPath === expectedPreview ? [path, expectedPreview] : [path]);
 
   if (!new RegExp(`^${viewer.id}/[0-9a-f-]{36}/[\\w.-]{1,100}$`).test(path)) return { error: "That upload didn't go through. Try again." };
   const name = fileName.trim().slice(0, 200) || "File";
@@ -285,12 +307,36 @@ export async function addPortfolioFile(path: string, fileName: string): Promise<
     await discard();
     return { error: "That kind of file can't be shared. Use a PDF, document, slides, spreadsheet, image or archive." };
   }
+  if (isOtherModelFile(name) || isOtherModelFile(path)) {
+    await discard();
+    return { error: "Export your model as STEP or STL. Partners can't open other CAD formats." };
+  }
+
+  const format = modelFormat(path);
+  if (format !== modelFormat(name) || (format !== null) !== (previewPath !== undefined)) {
+    await discard();
+    return { error: "That upload didn't go through. Try again." };
+  }
+  if (previewPath !== undefined) {
+    const preview = previewPath === expectedPreview ? await findObject("portfolio", previewPath) : null;
+    const previewSize = preview?.metadata?.size ?? 0;
+    const gzipped = preview ? await readHead("portfolio", previewPath, 2) : null;
+    if (!preview || previewSize < 1 || previewSize > MAX_MODEL_PREVIEW_BYTES || gzipped?.[0] !== 0x1f || gzipped?.[1] !== 0x8b) {
+      await discard();
+      return { error: "The 3D preview didn't upload. Try again." };
+    }
+  }
 
   const object = await findObject("portfolio", path);
   const size = object?.metadata?.size ?? 0;
-  if (!object || size < 1 || size > MAX_FILE_BYTES) {
+  const limit = format ? MAX_MODEL_BYTES : MAX_FILE_BYTES;
+  if (!object || size < 1 || size > limit) {
     await discard();
-    return { error: "That file is empty or over 10 MB." };
+    return { error: `That file is empty or over ${limit / 1024 / 1024} MB.` };
+  }
+  if (format && !(await looksLikeModel(path, format, size))) {
+    await discard();
+    return { error: `That file isn't a ${format === "step" ? "STEP" : "STL"} model we can read. Export it again and retry.` };
   }
 
   // The profile row has to exist before files can hang off it.
@@ -311,6 +357,7 @@ export async function addPortfolioFile(path: string, fileName: string): Promise<
     file_name: name,
     mime_type: object.metadata?.mimetype ?? null,
     size_bytes: size,
+    preview_path: previewPath ?? null,
   });
   if (error) {
     await discard();
@@ -326,7 +373,7 @@ export async function removePortfolioFile(id: string): Promise<FileResult> {
   const supabase = await createClient();
   const { data: file } = await supabase
     .from("student_files")
-    .select("kind, path")
+    .select("kind, path, preview_path")
     .eq("id", id)
     .eq("student_id", viewer.id)
     .maybeSingle();
@@ -334,7 +381,8 @@ export async function removePortfolioFile(id: string): Promise<FileResult> {
 
   const { error } = await supabase.from("student_files").delete().eq("id", id).eq("student_id", viewer.id);
   if (error) return { error: "We couldn't remove that. Try again." };
-  if (file.path) await supabase.storage.from(file.kind === "video" ? "videos" : "portfolio").remove([file.path as string]);
+  const paths = [file.path, file.preview_path].filter((p): p is string => Boolean(p));
+  if (paths.length) await supabase.storage.from(file.kind === "video" ? "videos" : "portfolio").remove(paths);
 
   revalidatePath("/profile", "layout");
   return { error: null };
